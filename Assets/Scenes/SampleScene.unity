@@ -331,17 +331,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 499691467438686620, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3564295953868258586, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
       propertyPath: cameraPosition
       value: 
       objectReference: {fileID: 466101360}
+    - target: {fileID: 4257495464913589286, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7807404292988511728, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 382.9115
       objectReference: {fileID: 0}
     - target: {fileID: 7807404292988511728, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.84
+      value: 3.46
       objectReference: {fileID: 0}
     - target: {fileID: 7807404292988511728, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
       propertyPath: m_LocalPosition.z
@@ -398,7 +406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1995008689577181780, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.29
+      value: 2.91
       objectReference: {fileID: 0}
     - target: {fileID: 1995008689577181780, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_LocalPosition.z
@@ -432,9 +440,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4378402350172519012, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: jumpKey
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: jumpCooldown
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: airMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: whatIsGround.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721612463930659882, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 5984304606158490593, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Name
       value: PlayerV2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -194,10 +194,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 173437169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4908eb2d1539ae74b97b8b31bc2ba8f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 375f594dcfb5d2d4fbbde0fc0619093f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  groundDrag: 5
+  playerHeight: 2
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1024
   orientation: {fileID: 972628696}
 --- !u!1 &466101359
 GameObject:
@@ -581,7 +586,7 @@ GameObject:
   - component: {fileID: 1599378993}
   - component: {fileID: 1599378992}
   - component: {fileID: 1599378991}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,14 +1,18 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public int TimeCount = 0;
+
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-
+    public float walkAcceleration;
     public float groundDrag;
 
     [Header("Jumping")]
@@ -74,6 +78,28 @@ public class PlayerMovement : MonoBehaviour
         SpeedControl();
         StateHandler();
 
+        //--Output Movement speed on Screen--//
+        GameObject walkText = GameObject.Find("SpeedTxt");
+        walkText.gameObject.GetComponent<Text>().text = "Speed: " + moveSpeed;
+        //-----------------------------------//
+
+        //increase walk speed over time//
+        if (state == MovementState.walking)
+        {
+            TimeCount++;
+            print(TimeCount);
+            if (TimeCount >= 50)
+            {
+                TimeCount = 0;
+                moveSpeed += walkAcceleration;
+                if (moveSpeed >= walkSpeed)
+                {
+                    moveSpeed = walkSpeed;
+                }
+            }
+        }
+        //----------------------------//
+
         // Testing things
         /*
         if(grounded)
@@ -128,6 +154,7 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Crouching
         if (Input.GetKey(crouchKey))
         {
+            moveSpeed = 0;
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
         }
@@ -135,15 +162,17 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Sprinting
         if (grounded && Input.GetKey(sprintKey))
         {
+            moveSpeed = 0;
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
         }
 
         // Mode - Walking
-        else if (grounded)
+        else if (grounded && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)))
         {
+            if (state != MovementState.walking && state != MovementState.sprinting)
+                moveSpeed = 1;
             state = MovementState.walking;
-            moveSpeed = walkSpeed;
         }
 
         // Mode - Air

@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private int TimeCount = 0;
+
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-
+    public float walkAcceleration;
     public float groundDrag;
 
     [Header("Jumping")]
     public float jumpForce;
+    private float jumpForceAtTime;
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
@@ -35,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
+    private bool exitingSlope;
 
 
     public Transform orientation;
@@ -73,14 +78,17 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
+        VelocityUpdate();
+        UpdateUI();
 
         // Testing things
-        /*
+
         if(grounded)
             Debug.Log("Grounded");
         if (readyToJump)
             Debug.Log("ready to jump");
-        */
+        if (OnSlope())
+            Debug.Log("On a slope");
 
         // Handle drag
         if (grounded)
@@ -100,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // When to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()))
         {
             readyToJump = false;
 
@@ -140,10 +148,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Walking
-        else if (grounded)
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             state = MovementState.walking;
-            moveSpeed = walkSpeed;
+        }
+        else if (grounded)
+        {
+            moveSpeed = 1;
         }
 
         // Mode - Air
@@ -158,10 +169,13 @@ public class PlayerMovement : MonoBehaviour
         // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // on slope
-        if (OnSlope())
+        // On slope
+        if (OnSlope() && !exitingSlope)
         {
             rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
+
+            if (rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
 
         // On ground
@@ -178,27 +192,44 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // Limit velocity if needed
-        if(flatVel.magnitude > moveSpeed)
+        // Limiting speed on slope
+        if (OnSlope() && !exitingSlope)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            if(rb.velocity.magnitude > moveSpeed)
+                rb.velocity = rb.velocity.normalized * moveSpeed;
+        }
+
+        // Limiting speed on ground or in air
+        else
+        {
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            // Limit velocity if needed
+            if (flatVel.magnitude > moveSpeed)
+            {
+                Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
         }
     }
 
     private void Jump()
     {
+        exitingSlope = true;
+        Debug.Log("exiting a slope");
+
         // Reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+        rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
+        Debug.Log("Trying to jump");
     }
 
     private void ResetJump()
     {
         readyToJump = true;
+
+        exitingSlope = false;
     }
 
     private bool OnSlope()
@@ -215,5 +246,33 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    private void UpdateUI()
+    {
+        GameObject speedText = GameObject.Find("SpeedTxt");
+        speedText.gameObject.GetComponent<Text>().text = "Speed: " + moveSpeed;
+        GameObject jumpText = GameObject.Find("JumpTxt");
+        jumpText.gameObject.GetComponent<Text>().text = "Jump: " + jumpForceAtTime;
+    }
+
+    private void VelocityUpdate()
+    {
+        jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+
+        if (state == MovementState.walking)
+        {
+            TimeCount++;
+            print(TimeCount);
+            if (TimeCount >= 50)
+            {
+                TimeCount = 0;
+                moveSpeed += walkAcceleration;
+                if (moveSpeed >= walkSpeed)
+                {
+                    moveSpeed = walkSpeed;
+                }
+            }
+        }
     }
 }

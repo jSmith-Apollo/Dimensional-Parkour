@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (grounded)
         {
-            moveSpeed = 1;
+            moveSpeed = 0;
         }
 
         // Mode - Air
@@ -274,5 +274,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+    private float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
 }

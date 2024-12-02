@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         UpdateUI();
 
         // Testing things
-
+        /*
         if(grounded)
             Debug.Log("Grounded");
         if (readyToJump)
@@ -95,7 +95,9 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = groundDrag;
         else
             rb.drag = 0;
+        */
     }
+        
 
     private void FixedUpdate()
     {
@@ -216,13 +218,13 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         exitingSlope = true;
-        Debug.Log("exiting a slope");
+        //Debug.Log("exiting a slope");
 
         // Reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
-        Debug.Log("Trying to jump");
+        //Debug.Log("Trying to jump");
     }
 
     private void ResetJump()
@@ -263,8 +265,8 @@ public class PlayerMovement : MonoBehaviour
         if (state == MovementState.walking)
         {
             TimeCount++;
-            print(TimeCount);
-            if (TimeCount >= 50)
+            //print(TimeCount);
+            if (TimeCount >= 25)
             {
                 TimeCount = 0;
                 moveSpeed += walkAcceleration;
@@ -274,5 +276,13 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+    }
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
+    }
+    public float GetMaxSpeed()
+    {
+        return walkSpeed;
     }
 }

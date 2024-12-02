@@ -64,7 +64,7 @@ public class UIUpdate : MonoBehaviour
     {
         FadeOutRun = true;
         //Check if the player is not running for more than a second//
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() > 1){ yield break; }
 
         //Fade out UI//
@@ -83,7 +83,7 @@ public class UIUpdate : MonoBehaviour
     private IEnumerator FadeInUIVelocity(GameObject obj)
     {
         FadeInRun = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         //Check if the player is  running for more than a second//
         if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() <= 1) { yield break; }
         

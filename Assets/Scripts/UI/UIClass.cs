@@ -35,7 +35,7 @@ public class UIClass : MonoBehaviour
         
     }
 
-    private IEnumerator fadeUI(GameObject obj, float t,float fps,float val)
+    protected IEnumerator fadeUI(GameObject obj, float t,float fps,float val)
     {
         float start = obj.GetComponent<Image>().color.a;
         for (float i = 0; i < t; i += 0.05f)
@@ -89,16 +89,13 @@ public class UIClass : MonoBehaviour
     public void setColor(GameObject obj, float r, float g, float b, float a)
     {
         //return null if no object is present or no image present//
-        if (obj == null || obj.GetComponent<Image>() == null)
-        {
-            return;
-        }
+        if (obj == null || obj.GetComponent<Image>() == null)  return;
 
         //change the objects color value//
         obj.GetComponent<Image>().color = new Color(r, g, b, a);
     }
 
-    private void visibleState(bool state)
+    protected void visibleState(bool state)
     {
         if (transform.gameObject.GetComponent<Canvas>() == null) return;
 
@@ -106,7 +103,7 @@ public class UIClass : MonoBehaviour
     }
     
     //Change the scale of a deminsion to the a value between 0-1//
-    private void scaleByVal(float val, GameObject obj, char Dem)
+    protected void scaleByVal(float val, GameObject obj, char Dem)
     {
         //return null if no object is present//
         if (obj == null) return;

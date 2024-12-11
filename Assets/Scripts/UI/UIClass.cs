@@ -38,9 +38,9 @@ public class UIClass : MonoBehaviour
     protected IEnumerator fadeUI(GameObject obj, float t,float fps,float val)
     {
         float start = obj.GetComponent<Image>().color.a;
-        for (float i = 0; i < t; i += 0.05f)
+        for (float i = 0; i < 1.05; i += 0.05f)
         {
-            //print(lerp(1, 0, i));
+            print(i);
             yield return new WaitForSeconds((1/fps)*t);
             obj.GetComponent<Image>().color = new Color(obj.GetComponent<Image>().color.r,
                                                         obj.GetComponent<Image>().color.g,
@@ -48,6 +48,7 @@ public class UIClass : MonoBehaviour
                                                         Mathf.Lerp(start, val, i)
                                                        );
         }
+
     }
 
     //Get all objects descendants in the hierarcy//

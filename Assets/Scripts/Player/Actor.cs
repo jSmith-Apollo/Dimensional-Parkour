@@ -87,6 +87,11 @@ public class Actor : MonoBehaviour
         {
             Death();
         }
+
+        if (health != maxhealth && canRegen)
+        {
+            Regen();
+        }
     }
 
     public void Move(float x, float y, float z)
@@ -108,6 +113,7 @@ public class Actor : MonoBehaviour
     public void TakeHealth(float amt)
     {
         health -= amt;
+        StartCoroutine(RegenTimer());
     }
 
     public void Death()
@@ -129,14 +135,18 @@ public class Actor : MonoBehaviour
         if (health < maxhealth)
         {
             canRegen = false;
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(regenDelay);
             canRegen = true;
         }
     }
 
     private void Regen()
     {
-        health += 0.2f;
+        health += regenAmount;
+        if (health > maxhealth)
+        {
+            health = maxhealth;
+        }
     }
 
     public float GetSpeed()

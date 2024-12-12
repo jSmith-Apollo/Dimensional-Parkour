@@ -30,6 +30,10 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
     public KeyCode crouchKey = KeyCode.LeftControl;
+    public KeyCode testKey1 = KeyCode.Z;
+    public KeyCode testKey2 = KeyCode.X;
+    public KeyCode testKey3 = KeyCode.C;
+    public KeyCode testKey4 = KeyCode.V;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -50,6 +54,11 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
 
     Rigidbody rb;
+
+    private bool test1Pressed;
+    private bool test2Pressed;
+    private bool test3Pressed;
+    private bool test4Pressed;
 
     public MovementState state;
     public enum MovementState
@@ -131,6 +140,54 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
+
+        // Test button
+        if (Input.GetKeyDown(testKey1))
+        {
+            if (!test1Pressed)
+            {
+                GameObject.Find("TestCube").GetComponent<Actor>().Move(379.0316f, 1.47f, 328.306f);
+            }
+            test1Pressed = true;
+        }
+        if(Input.GetKeyUp(testKey1))
+            test1Pressed = false;
+
+        // Test button
+        if (Input.GetKeyDown(testKey2))
+        {
+            if (!test2Pressed)
+            {
+                GameObject.Find("TestCube").GetComponent<Actor>().Move(368.32f, 4.67f, 333.9f);
+            }
+            test2Pressed = true;
+        }
+        if (Input.GetKeyUp(testKey2))
+            test2Pressed = false;
+
+        // Test button
+        if (Input.GetKeyDown(testKey3))
+        {
+            if (!test3Pressed)
+            {
+                GameObject.Find("TestCube").GetComponent<Actor>().Move(339.6f, 7.01f, 344.48f);
+            }
+            test3Pressed = true;
+        }
+        if (Input.GetKeyUp(testKey3))
+            test3Pressed = false;
+
+        // Test button
+        if (Input.GetKeyDown(testKey4))
+        {
+            if (!test4Pressed)
+            {
+                GameObject.Find("TestCube").GetComponent<Actor>().Move(375.43f, 0.8f, 354.86f);
+            }
+            test4Pressed = true;
+        }
+        if (Input.GetKeyUp(testKey4))
+            test4Pressed = false;
     }
 
     public void StateHandler()

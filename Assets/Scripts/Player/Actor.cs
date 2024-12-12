@@ -10,13 +10,13 @@ public class Actor : MonoBehaviour
 
     [Header("Health")]
     public float health;
-    private float maxhealth;
-    private bool canRegen;
-    private float regenDelay;
-    private float regenAmount;
+    protected float maxhealth;
+    protected bool canRegen;
+    protected float regenDelay;
+    protected float regenAmount;
 
     [Header("Movement")]
-    private float moveSpeed;
+    protected float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
     public float walkAcceleration;
@@ -25,7 +25,7 @@ public class Actor : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpForce;
-    private float jumpForceAtTime;
+    protected float jumpForceAtTime;
     public float jumpCooldown;
     public float airMultiplier;
     public bool readyToJump;
@@ -33,7 +33,7 @@ public class Actor : MonoBehaviour
     [Header("Crouching")]
     public float crouchSpeed;
     public float crouchYScale;
-    private float startYScale;
+    protected float startYScale;
 
     [Header("GroundCheck")]
     public float height;
@@ -41,9 +41,9 @@ public class Actor : MonoBehaviour
     public bool grounded;
 
     [Header("Slope Handling")]
-    private float maxSlopeAngle;
-    private RaycastHit slopeHit;
-    private bool exitingSlope;
+    protected float maxSlopeAngle;
+    protected RaycastHit slopeHit;
+    protected bool exitingSlope;
 
     public Transform Orientation;
     public Rigidbody rb;

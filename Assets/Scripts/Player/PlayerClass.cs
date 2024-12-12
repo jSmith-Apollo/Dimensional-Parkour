@@ -2,75 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerClass : MonoBehaviour
+public class PlayerClass : Actor
 {
-    [Header("Stats")]
-    public float health;
-        private float maxhealth;
-        private bool Regen = true; 
+    //Player Information//
+    private float points;
+    private List<GameObject> inventory = new List<GameObject>();
+    private GameObject[] Equipped = new GameObject[3];
 
-    public float MaxVelocity;
-        private float Velocity;
-        private float acceleration;
-    public float JumpHeight;
-    public float PlayerHeight;
-
+    //Keybinds//
     [Header("keyBinds")]
-    public KeyCode Jump = KeyCode.Space;
-    public KeyCode sprint = KeyCode.LeftShift;
-    public KeyCode crouch = KeyCode.LeftControl;
-    public KeyCode special1 = KeyCode.Alpha0;
-    public KeyCode special2 = KeyCode.Alpha1;
-    public KeyCode special3 = KeyCode.Alpha2;
-    public KeyCode restart = KeyCode.R;
-    public KeyCode respawn = KeyCode.Space;
+    public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode sprintKey = KeyCode.LeftShift;
+    public KeyCode crouchKey = KeyCode.LeftControl;
+    public KeyCode special1Key = KeyCode.Alpha0;
+    public KeyCode special2Key = KeyCode.Alpha1;
+    public KeyCode special3Key = KeyCode.Alpha2;
+    public KeyCode dimensionKey = KeyCode.F;
+    public KeyCode interactKey = KeyCode.E;
+    public KeyCode DenyKey = KeyCode.X;
+    public KeyCode MenuKey = KeyCode.M;
 
-    private bool CanAct;
+    //PlayerInputs//
+    float HorizontalInput;
+    float VerticalInput;
+
     void Start()
     {
-        maxhealth = health;
-        CanAct = true;
+
     }
 
     void Update()
     {
-        //Test Healthfunction//
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            print("dmgTaken");
-            TakeHealth(maxhealth/5);
-        }
-        //Respawn player//
-        if (health <= 0)
-        {
-            Respawn();
-        }
-        if (health != maxhealth && Regen) {
-            health += 0.01f;
-        }
+       
     }
 
-    public void TakeHealth(float amount)
+    public void MyInput()
     {
-        health -= amount;
-        StartCoroutine("regentimer");
+
     }
 
-    private IEnumerator regentimer()
+    public void CheckKeys()
     {
-        Regen = false;
-        yield return new WaitForSeconds(5f);
-        Regen = true;
+
+    }
+    
+    public void Interact()
+    {
+
     }
 
-    public void Respawn()
+    public void OpenMenu()
     {
-        CanAct = false;
-        print("Super Dead X_X");
+
     }
 
-    public float getHealth()
+    public void CloseMenu()
     {
-        return health;
+
     }
+
+    public void ChangeEquip(GameObject obj,int pos)
+    {
+
+    }
+
+    public float GetPoints()
+    {
+        return points;
+    }
+
+    public void setPoints(float p)
+    {
+        points = p;
+    }
+    public void ChangeDimension(int d)
+    {
+
+    }
+
 }

@@ -25,6 +25,8 @@ public class UIInterface : UIClass
         HealthBackground = GameObject.Find("HealthBarBackground");
         HealthBar = GameObject.Find("HealthBar");
 
+        //Start corutines//
+        StartCoroutine(SpeedFadeHelper());
     }
 
     // Update is called once per frame
@@ -55,12 +57,31 @@ public class UIInterface : UIClass
                 );
         //---------------------------------------------------------//
 
-        // Determine if the UI should be faded out due to lack of use //
+    }
+
+    private IEnumerator SpeedFadeHelper()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            print(GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed());
+            //Fade out UI//
+            if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() == 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 1)
+            {
+                StartCoroutine(fadeUI(SpeedBackground, 1, 30, 0));
+
+                //Fade in UI//
+            }
+            else if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() > 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 0)
+            {
+                StartCoroutine(fadeUI(SpeedBackground, 1, 30, 1));
+            }
+        }
     }
     public void UpdateHealthUI()
     {
         //Scale the health UI to the health value of the player//
-        //Add in when player is added//
+        //Add in when playerClass is added//
         //----------------------------------------------------//
 
         //Change the Bar to match the transparency of the Background//
@@ -72,6 +93,8 @@ public class UIInterface : UIClass
                 );
         //---------------------------------------------------------//
 
-        // Determine if the UI should be faded out due to lack of use //
+        // Determine if the UI should be visible or not out due to lack of use //
+        //Add in when playerClass is added//
+        //--------------------------------------------------------------------//
     }
 }

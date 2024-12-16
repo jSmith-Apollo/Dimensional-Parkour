@@ -58,7 +58,8 @@ public class Actor : MonoBehaviour
         sprinting,
         crouching,
         air,
-        dead
+        dead,
+        idle
     }
 
     public void Start()
@@ -66,6 +67,7 @@ public class Actor : MonoBehaviour
         canAct = true;
         readyToJump = true;
         grounded = true;
+        state = MovementState.idle;
 
         //Test
         
@@ -73,25 +75,13 @@ public class Actor : MonoBehaviour
 
     public void Update()
     {
-        if (canAct)
-        {
-            canRegen = true;
-        }
-        else
-        {
-            canRegen = false;
-            readyToJump = false;
-            SetSpeed(0);
-        }
-        if(health <= 0)
-        {
-            Death();
-        }
-
-        if (health != maxhealth && canRegen)
+        if (health != maxhealth && canRegen && canAct)
         {
             Regen();
         }
+
+        UpdateState();
+        UpdateValues();
     }
 
     public void Move(float x, float y, float z)
@@ -132,7 +122,7 @@ public class Actor : MonoBehaviour
 
     private IEnumerator RegenTimer()
     {
-        if (health < maxhealth)
+        if (health < maxhealth && canAct)
         {
             canRegen = false;
             yield return new WaitForSeconds(regenDelay);
@@ -146,6 +136,97 @@ public class Actor : MonoBehaviour
         if (health > maxhealth)
         {
             health = maxhealth;
+        }
+    }
+
+    protected void UpdateState()
+    {
+        if (canAct == true)
+        {
+            if (grounded)
+            {
+                //Check for crouching
+                if (moveSpeed == crouchSpeed && transform.localScale.y == crouchYScale)
+                {
+                    state = MovementState.crouching;
+                }
+                //Check for walking
+                else if (moveSpeed > 1 && moveSpeed < walkSpeed)
+                {
+                    state = MovementState.walking;
+                }
+                //check for sprinting
+                else if (moveSpeed > walkSpeed)
+                {
+                    state = MovementState.sprinting;
+                }
+                else
+                    state = MovementState.idle;
+            }
+            else
+            {
+                state = MovementState.air;
+            }
+
+            //Check if player is dead
+            if (health <= 0)
+                state = MovementState.dead;
+        }
+    }
+
+    protected void UpdateValues()
+    {
+        if (canAct == true)
+        {
+            if (state == MovementState.walking)
+            {
+                //Increase speed by walkAcceleration until reaching walk speed//
+                if (moveSpeed < walkSpeed)
+                {
+                    moveSpeed += walkAcceleration;
+                }
+                //deceleration if move speed is above walk speed// 
+                else if (moveSpeed > walkSpeed)
+                {
+                    moveSpeed -= walkAcceleration;
+                }
+                else
+                {
+                    moveSpeed = walkSpeed;
+                }
+            }
+            else if (state == MovementState.sprinting)
+            {
+                if (moveSpeed < sprintSpeed)
+                {
+                    //Increase walk speed by walk acceleration until sprinting //
+                    if (moveSpeed < walkSpeed)
+                        moveSpeed += walkAcceleration;
+                    //when sprinting make acceleration increase by 1.25x //
+                    else
+                        moveSpeed += 1.25f * walkAcceleration;
+                }
+                else
+                {
+                    moveSpeed = sprintSpeed;
+                }
+            }
+            else if (state == MovementState.crouching)
+            {
+                //jump down to crouch speed if greater than walk speed
+                if (moveSpeed >= crouchSpeed)
+                    moveSpeed = crouchSpeed;
+                else
+                    moveSpeed += walkAcceleration;
+            }
+            else if (state == MovementState.air)
+            {
+
+            }
+            else if (state == MovementState.dead)
+            {
+                Death();
+            }
         }
     }
 

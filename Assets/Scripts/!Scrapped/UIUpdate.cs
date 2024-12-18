@@ -125,18 +125,18 @@ public class UIUpdate : MonoBehaviour
         }
         //--------------------------//
         // HealthBar FadeIn and out //
-        if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().getHealth() < 100 && HealthbarBg.GetComponent<Image>().color.a <= 0.9)
+        if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() < 100 && HealthbarBg.GetComponent<Image>().color.a <= 0.9)
         {
             StartCoroutine(FadeInUI(HealthbarBg));
         }
-        else if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().getHealth() >= 100 && HealthbarBg.GetComponent<Image>().color.a >= 0.9)
+        else if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() >= 100 && HealthbarBg.GetComponent<Image>().color.a >= 0.9)
         {
             StartCoroutine(FadeOutUI(HealthbarBg));
         }
         //---------------------------//
         //Update Velocity and Health//
         VelocityBar.transform.localScale = new Vector3(movespeed / GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed(), VelocityBar.transform.localScale.y, VelocityBar.transform.localScale.z);
-        HealthBar.transform.localScale = new Vector3(GameObject.Find("PlayerV2").GetComponent<PlayerClass>().getHealth() / 100, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
+        HealthBar.transform.localScale = new Vector3(GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() / 100, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
         if (VelocitybarBg.GetComponent<Image>().color.a != VelocityBar.GetComponent<Image>().color.a)
         {
             VelocityBar.GetComponent<Image>().color = new Color(VelocityBar.GetComponent<Image>().color.r,

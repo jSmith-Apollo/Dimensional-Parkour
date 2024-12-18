@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Actor : MonoBehaviour
 {
     [Header("Basic Properties")]
@@ -21,14 +22,14 @@ public class Actor : MonoBehaviour
     public float sprintSpeed;
     public float walkAcceleration;
     public float groundDrag;
-    public float maxSpeed;
+    protected float maxSpeed;
 
     [Header("Jumping")]
     public float jumpForce;
     protected float jumpForceAtTime;
     public float jumpCooldown;
     public float airMultiplier;
-    public bool readyToJump;
+    protected bool readyToJump;
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -38,19 +39,21 @@ public class Actor : MonoBehaviour
     [Header("GroundCheck")]
     public float height;
     public LayerMask whatIsGround;
-    public bool grounded;
+    protected bool grounded;
 
     [Header("Slope Handling")]
-    protected float maxSlopeAngle;
+    public float maxSlopeAngle;
     protected RaycastHit slopeHit;
     protected bool exitingSlope;
 
     public Transform Orientation;
-    public Rigidbody rb;
+    protected Rigidbody rb;
 
-    public bool canAct;
+    [Header("State")]
     public MovementState state;
-    public Vector3 moveDirection;
+    public bool canAct;
+
+    protected Vector3 moveDirection;
 
     public enum MovementState
     {
@@ -62,7 +65,7 @@ public class Actor : MonoBehaviour
         idle
     }
 
-    public void Start()
+    public virtual void Start()
     {
         //Update Actor rigidbody// 
         rb = gameObject.GetComponent<Rigidbody>();
@@ -90,6 +93,10 @@ public class Actor : MonoBehaviour
         UpdateValues();
     }
 
+    public virtual void FixedUpdate()
+    {
+
+    }
     protected void crouch(bool mode)
     {
         if (mode)
@@ -109,15 +116,30 @@ public class Actor : MonoBehaviour
 
     protected void jump()
     {
-        .
+        if (readyToJump && grounded)
+        {
+            readyToJump = false;
+
+            rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
+
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }
+    private void ResetJump()
+    {
+        readyToJump = true;
+        exitingSlope = false;
     }
 
+    /* (Noticed based on research that the Move method has a few problems) 
+      #1: doesnt replicate its based method MovePlayer() in PlayerMovement.cs
+      #2: updates based on transform instead of rb, Which can lead to physics issues
+    */
     public void Move(float x, float y, float z)
     {
         IEnumerator helper = MoveHelper(transform.position, new Vector3(x, y, z));
         StartCoroutine(helper);
     }
-
     private IEnumerator MoveHelper(Vector3 start, Vector3 end)
     {
         for (float i = 0; i < 1; i += 0.005f)
@@ -128,6 +150,11 @@ public class Actor : MonoBehaviour
         }
     }
 
+    public void MoveByForce(float x, float y, float z)
+    {
+        rb.AddForce(new Vector3(x,y,z),ForceMode.Force);
+    }
+
     public void TakeHealth(float amt)
     {
         health -= amt;
@@ -136,7 +163,6 @@ public class Actor : MonoBehaviour
 
     public void Death()
     {
-        state = MovementState.dead;
         canAct = false;
         //More will be added when other things are implemented
     }

@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerClass : Actor
 {
     //Player Information//
     private float points;
-    private List<GameObject> inventory = new List<GameObject>();
-    private GameObject[] Equipped = new GameObject[3];
+    private List<GameObject> inventory;
+    private GameObject[] Equipped;
 
     //Keybinds//
     [Header("keyBinds")]
@@ -20,32 +22,75 @@ public class PlayerClass : Actor
     public KeyCode dimensionKey = KeyCode.F;
     public KeyCode interactKey = KeyCode.E;
     public KeyCode DenyKey = KeyCode.X;
-    public KeyCode MenuKey = KeyCode.M;
+    public KeyCode MenuKey = KeyCode.Escape;
 
     //PlayerInputs//
-    float HorizontalInput;
-    float VerticalInput;
+    float horizontalInput;
+    float verticalInput;
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
+        inventory = new List<GameObject>();
+        Equipped = new GameObject[3];
 
     }
 
-    void Update()
+    public override void FixedUpdate()
     {
-       
+        Move();
     }
 
     public void MyInput()
     {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
+        CheckKeys();
     }
 
     public void CheckKeys()
     {
+        //Jump when key is down//
+        if (Input.GetKeyDown(jumpKey))
+            jump();
+
+        //Sprint when key is down//
+        if (Input.GetKeyDown(sprintKey))
+            sprint(true);
+
+        //stop sprinting when key is up//
+        if (Input.GetKeyUp(sprintKey))
+            sprint(false);
+
+        //Crouch when key is down//
+        if (Input.GetKeyDown(crouchKey))
+            crouch(true);
+
+        //uncrouch when key is up//
+        if (Input.GetKeyUp(crouchKey))
+            crouch(false);
 
     }
-    
+
+    public void Move()
+    {
+        //Calculate Movement direction//
+
+        moveDirection = Orientation.forward * verticalInput + Orientation.right * horizontalInput;
+
+        //Move player according to direction when on ground//
+        if (grounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+        //move slower when in air//
+        else if (!grounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
+    }
+
     public void Interact()
     {
 
@@ -63,7 +108,8 @@ public class PlayerClass : Actor
 
     public void ChangeEquip(GameObject obj,int pos)
     {
-
+        if (pos >= 3 || Equipped[pos] == obj) return;
+        Equipped[pos] = obj;
     }
 
     public float GetPoints()

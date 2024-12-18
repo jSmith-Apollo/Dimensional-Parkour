@@ -1439,6 +1439,7 @@ GameObject:
   - component: {fileID: 536033699}
   - component: {fileID: 536033698}
   - component: {fileID: 536033697}
+  - component: {fileID: 536033700}
   - component: {fileID: 536033696}
   - component: {fileID: 536033695}
   m_Layer: 0
@@ -1465,23 +1466,19 @@ MonoBehaviour:
   sprintSpeed: 10
   walkAcceleration: 1
   groundDrag: 0
-  maxSpeed: 12
   jumpForce: 0
   jumpCooldown: 0
   airMultiplier: 0
-  readyToJump: 1
   crouchSpeed: 0
   crouchYScale: 0
   height: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
-  grounded: 0
+  maxSlopeAngle: 0
   Orientation: {fileID: 0}
-  rb: {fileID: 0}
-  canAct: 1
   state: 0
-  moveDirection: {x: 0, y: 0, z: 0}
+  canAct: 1
 --- !u!65 &536033696
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1568,6 +1565,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &536033700
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536033694}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &563335684
 GameObject:
   m_ObjectHideFlags: 0
@@ -5243,6 +5267,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1995008689577181780, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_CollisionDetection
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}

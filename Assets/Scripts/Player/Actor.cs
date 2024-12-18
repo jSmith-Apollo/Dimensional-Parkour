@@ -64,10 +64,16 @@ public class Actor : MonoBehaviour
 
     public void Start()
     {
+        //Update Actor rigidbody// 
+        rb = gameObject.GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        //---------------------//
+        //Update player active level//
         canAct = true;
         readyToJump = true;
         grounded = true;
         state = MovementState.idle;
+        //-------------------------//
 
         //Test
         
@@ -82,6 +88,28 @@ public class Actor : MonoBehaviour
 
         UpdateState();
         UpdateValues();
+    }
+
+    protected void crouch(bool mode)
+    {
+        if (mode)
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        else
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+
+    }
+
+    protected void sprint(bool mode)
+    {
+        if (mode)
+            maxSpeed = sprintSpeed;
+        else
+            maxSpeed = walkSpeed;
+    }
+
+    protected void jump()
+    {
+        .
     }
 
     public void Move(float x, float y, float z)
@@ -146,7 +174,7 @@ public class Actor : MonoBehaviour
             if (grounded)
             {
                 //Check for crouching
-                if (moveSpeed == crouchSpeed && transform.localScale.y == crouchYScale)
+                if (transform.localScale.y == crouchYScale)
                 {
                     state = MovementState.crouching;
                 }
@@ -160,14 +188,14 @@ public class Actor : MonoBehaviour
                 {
                     state = MovementState.sprinting;
                 }
-                else
+                else if (rb.velocity == Vector3.zero)
                     state = MovementState.idle;
             }
             else
             {
                 state = MovementState.air;
             }
-
+            
             //Check if player is dead
             if (health <= 0)
                 state = MovementState.dead;
@@ -178,6 +206,7 @@ public class Actor : MonoBehaviour
     {
         if (canAct == true)
         {
+            grounded = Physics.Raycast(transform.position, Vector3.down, height * 0.5f + 0.2f, whatIsGround);
             if (state == MovementState.walking)
             {
                 //Increase speed by walkAcceleration until reaching walk speed//

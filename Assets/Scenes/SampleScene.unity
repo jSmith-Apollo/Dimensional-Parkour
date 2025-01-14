@@ -1477,7 +1477,7 @@ MonoBehaviour:
     m_Bits: 1024
   maxSlopeAngle: 0
   Orientation: {fileID: 0}
-  rb: {fileID: 0}
+  rb: {fileID: 536033700}
   state: 0
   canAct: 1
 --- !u!65 &536033696

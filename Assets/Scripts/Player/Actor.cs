@@ -17,7 +17,7 @@ public class Actor : MonoBehaviour
     protected float regenAmount;
 
     [Header("Movement")]
-    protected float moveSpeed;
+    protected float moveSpeed = 1;
     public float walkSpeed;
     public float sprintSpeed;
     public float walkAcceleration;
@@ -47,7 +47,7 @@ public class Actor : MonoBehaviour
     protected bool exitingSlope;
 
     public Transform Orientation;
-    protected Rigidbody rb;
+    public Rigidbody rb;
 
     [Header("State")]
     public MovementState state;
@@ -68,7 +68,6 @@ public class Actor : MonoBehaviour
     public virtual void Start()
     {
         //Update Actor rigidbody// 
-        rb = gameObject.GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         //---------------------//
         //Update player active level//
@@ -91,6 +90,7 @@ public class Actor : MonoBehaviour
 
         UpdateState();
         UpdateValues();
+        print("Movespeed: " + moveSpeed);
     }
 
     public virtual void FixedUpdate()

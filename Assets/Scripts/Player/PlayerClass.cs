@@ -39,13 +39,13 @@ public class PlayerClass : Actor
     public override void FixedUpdate()
     {
         Move();
+        MyInput();
     }
 
     public void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
         CheckKeys();
     }
 
@@ -83,6 +83,7 @@ public class PlayerClass : Actor
         if (grounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            
         }
         //move slower when in air//
         else if (!grounded)
@@ -96,11 +97,13 @@ public class PlayerClass : Actor
 
     }
 
+    //For later date//
     public void OpenMenu()
     {
 
     }
 
+    //For later date//
     public void CloseMenu()
     {
 

@@ -1477,6 +1477,7 @@ MonoBehaviour:
     m_Bits: 1024
   maxSlopeAngle: 0
   Orientation: {fileID: 0}
+  rb: {fileID: 0}
   state: 0
   canAct: 1
 --- !u!65 &536033696
@@ -4889,6 +4890,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1775969603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2033303615 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+  m_PrefabInstance: {fileID: 2947433761204981354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2082450440
 GameObject:
   m_ObjectHideFlags: 0
@@ -5276,6 +5282,14 @@ PrefabInstance:
     - target: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_CollisionDetection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 2033303615}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: canAct
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Name

@@ -36,7 +36,7 @@ public class PlayerClass : Actor
 
     }
 
-    public override void FixedUpdate()
+    public void FixedUpdate()
     {
         Move();
         MyInput();

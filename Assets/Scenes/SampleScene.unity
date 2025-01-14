@@ -1456,7 +1456,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536033694}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adb3ff8c6755f9b47aa6fec76de5e5ce, type: 3}
   m_Name: 
@@ -5219,6 +5219,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7961548698202291464, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
+      propertyPath: sensX
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961548698202291464, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
+      propertyPath: sensY
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961548698202291464, guid: de1b820d2c004964ab2ead74447d6fed, type: 3}
       propertyPath: orientation
       value: 
       objectReference: {fileID: 972628696}
@@ -5290,6 +5298,10 @@ PrefabInstance:
     - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: canAct
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: groundDrag
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Name

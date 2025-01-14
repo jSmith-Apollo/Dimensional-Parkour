@@ -67,15 +67,20 @@ public class Actor : MonoBehaviour
 
     public virtual void Start()
     {
+        //Update Values//
+        maxhealth = health;
         //Update Actor rigidbody// 
         rb.freezeRotation = true;
+        rb.drag = groundDrag;
         //---------------------//
         //Update player active level//
         canAct = true;
         readyToJump = true;
         grounded = true;
-        state = MovementState.idle;
+        state = MovementState.walking;
         //-------------------------//
+        StartCoroutine(FixedValueUpdate());
+
 
         //Test
         
@@ -89,14 +94,11 @@ public class Actor : MonoBehaviour
         }
 
         UpdateState();
-        UpdateValues();
         print("Movespeed: " + moveSpeed);
+        print("State: " + state.ToString());
+        print("Health: " + health);
     }
 
-    public virtual void FixedUpdate()
-    {
-
-    }
     protected void crouch(bool mode)
     {
         if (mode)
@@ -199,13 +201,18 @@ public class Actor : MonoBehaviour
         {
             if (grounded)
             {
+                //check if idle
+                if (!Input.GetKeyDown(KeyCode.W) || !Input.GetKeyDown(KeyCode.S) || !Input.GetKeyDown(KeyCode.A) || !Input.GetKeyDown(KeyCode.D))
+                {
+                    state = MovementState.idle;
+                }
                 //Check for crouching
-                if (transform.localScale.y == crouchYScale)
+                else if (transform.localScale.y == crouchYScale)
                 {
                     state = MovementState.crouching;
                 }
                 //Check for walking
-                else if (moveSpeed > 1 && moveSpeed < walkSpeed)
+                else if (moveSpeed >= 1 && moveSpeed < walkSpeed)
                 {
                     state = MovementState.walking;
                 }
@@ -214,8 +221,7 @@ public class Actor : MonoBehaviour
                 {
                     state = MovementState.sprinting;
                 }
-                else if (rb.velocity == Vector3.zero)
-                    state = MovementState.idle;
+                
             }
             else
             {
@@ -228,6 +234,14 @@ public class Actor : MonoBehaviour
         }
     }
 
+    private IEnumerator FixedValueUpdate()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            UpdateValues();
+        }
+    }
     protected void UpdateValues()
     {
         if (canAct == true)
@@ -273,6 +287,13 @@ public class Actor : MonoBehaviour
                     moveSpeed = crouchSpeed;
                 else
                     moveSpeed += walkAcceleration;
+            }
+            else if (state == MovementState.idle)
+            {
+                if (moveSpeed > 1)
+                {
+                    moveSpeed -= 1;
+                }
             }
             else if (state == MovementState.air)
             {

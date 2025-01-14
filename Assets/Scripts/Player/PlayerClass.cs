@@ -34,10 +34,6 @@ public class PlayerClass : Actor
         inventory = new List<GameObject>();
         Equipped = new GameObject[3];
 
-        canAct = true;
-        readyToJump = true;
-        grounded = true;
-        state = MovementState.idle;
 
     }
 

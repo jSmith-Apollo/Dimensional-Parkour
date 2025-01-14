@@ -88,9 +88,14 @@ public class Actor : MonoBehaviour
             Regen();
         }
 
+        if (grounded)
+            rb.drag = groundDrag;
+        else
+            rb.drag = 0;
+
         UpdateState();
         UpdateValues();
-        print("Movespeed: " + moveSpeed);
+        //print("Movespeed: " + moveSpeed);
     }
 
     public virtual void FixedUpdate()
@@ -116,19 +121,32 @@ public class Actor : MonoBehaviour
 
     protected void jump()
     {
-        if (readyToJump && grounded)
-        {
-            readyToJump = false;
+        exitingSlope = true;
+        //Debug.Log("exiting a slope");
 
-            rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
+        // Reset y velocity
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
+        rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
+        Debug.Log("Trying to jump");
     }
-    private void ResetJump()
+    protected void ResetJump()
     {
         readyToJump = true;
         exitingSlope = false;
+    }
+
+    protected bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, height * 0.5f + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            
+            return angle < maxSlopeAngle && angle != 0;
+        }
+
+        print("Not on a slope");
+        return false;
     }
 
     /* (Noticed based on research that the Move method has a few problems) 
@@ -140,6 +158,7 @@ public class Actor : MonoBehaviour
         IEnumerator helper = MoveHelper(transform.position, new Vector3(x, y, z));
         StartCoroutine(helper);
     }
+
     private IEnumerator MoveHelper(Vector3 start, Vector3 end)
     {
         for (float i = 0; i < 1; i += 0.005f)
@@ -199,13 +218,14 @@ public class Actor : MonoBehaviour
         {
             if (grounded)
             {
+
                 //Check for crouching
                 if (transform.localScale.y == crouchYScale)
                 {
                     state = MovementState.crouching;
                 }
                 //Check for walking
-                else if (moveSpeed > 1 && moveSpeed < walkSpeed)
+                else if (moveSpeed >= 1 && moveSpeed < walkSpeed)
                 {
                     state = MovementState.walking;
                 }
@@ -232,6 +252,8 @@ public class Actor : MonoBehaviour
     {
         if (canAct == true)
         {
+            jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+
             grounded = Physics.Raycast(transform.position, Vector3.down, height * 0.5f + 0.2f, whatIsGround);
             if (state == MovementState.walking)
             {

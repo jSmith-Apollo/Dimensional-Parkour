@@ -34,6 +34,11 @@ public class PlayerClass : Actor
         inventory = new List<GameObject>();
         Equipped = new GameObject[3];
 
+        canAct = true;
+        readyToJump = true;
+        grounded = true;
+        state = MovementState.idle;
+
     }
 
     public override void FixedUpdate()
@@ -52,11 +57,15 @@ public class PlayerClass : Actor
     public void CheckKeys()
     {
         //Jump when key is down//
-        if (Input.GetKeyDown(jumpKey))
+        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()))
+        {
+            readyToJump = false;
             jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
 
-        //Sprint when key is down//
-        if (Input.GetKeyDown(sprintKey))
+            //Sprint when key is down//
+            if (Input.GetKeyDown(sprintKey))
             sprint(true);
 
         //stop sprinting when key is up//

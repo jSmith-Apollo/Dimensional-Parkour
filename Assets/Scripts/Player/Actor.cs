@@ -67,18 +67,19 @@ public class Actor : MonoBehaviour
 
     public virtual void Start()
     {
-        //Update Actor rigidbody// 
+        //Update Values//
+        maxhealth = health;
+        //Update Actor rigidbody//
         rb.freezeRotation = true;
+        rb.drag = groundDrag;
         //---------------------//
         //Update player active level//
         canAct = true;
         readyToJump = true;
         grounded = true;
-        state = MovementState.idle;
+        state = MovementState.walking;
         //-------------------------//
-
-        //Test
-        
+        StartCoroutine(FixedValueUpdate());
     }
 
     public void Update()
@@ -147,6 +148,11 @@ public class Actor : MonoBehaviour
 
         print("Not on a slope");
         return false;
+    }
+
+    protected Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
     }
 
     /* (Noticed based on research that the Move method has a few problems) 
@@ -218,9 +224,13 @@ public class Actor : MonoBehaviour
         {
             if (grounded)
             {
-
+                //check if idle
+                if (rb.velocity == Vector3.zero)
+                {
+                    state = MovementState.idle;
+                }
                 //Check for crouching
-                if (transform.localScale.y == crouchYScale)
+                else if (transform.localScale.y == crouchYScale)
                 {
                     state = MovementState.crouching;
                 }
@@ -234,20 +244,27 @@ public class Actor : MonoBehaviour
                 {
                     state = MovementState.sprinting;
                 }
-                else if (rb.velocity == Vector3.zero)
-                    state = MovementState.idle;
+
             }
             else
             {
                 state = MovementState.air;
             }
-            
+
             //Check if player is dead
             if (health <= 0)
                 state = MovementState.dead;
         }
     }
 
+    private IEnumerator FixedValueUpdate()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.55f);
+            UpdateValues();
+        }
+    }
     protected void UpdateValues()
     {
         if (canAct == true)
@@ -262,7 +279,7 @@ public class Actor : MonoBehaviour
                 {
                     moveSpeed += walkAcceleration;
                 }
-                //deceleration if move speed is above walk speed// 
+                //deceleration if move speed is above walk speed//
                 else if (moveSpeed > walkSpeed)
                 {
                     moveSpeed -= walkAcceleration;
@@ -295,6 +312,13 @@ public class Actor : MonoBehaviour
                     moveSpeed = crouchSpeed;
                 else
                     moveSpeed += walkAcceleration;
+            }
+            else if (state == MovementState.idle)
+            {
+                if (moveSpeed > 1)
+                {
+                    moveSpeed = 1;
+                }
             }
             else if (state == MovementState.air)
             {

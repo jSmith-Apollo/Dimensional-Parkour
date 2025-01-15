@@ -84,6 +84,15 @@ public class PlayerClass : Actor
 
         moveDirection = Orientation.forward * verticalInput + Orientation.right * horizontalInput;
 
+        // On slope
+        if (OnSlope() && !exitingSlope)
+        {
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
+
+            if (rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
+
         //Move player according to direction when on ground//
         if (grounded)
         {

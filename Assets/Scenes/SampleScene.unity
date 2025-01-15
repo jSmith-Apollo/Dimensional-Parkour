@@ -5299,6 +5299,10 @@ PrefabInstance:
       propertyPath: canAct
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: airMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8326352139945260997, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Name
       value: PlayerV2

@@ -5285,7 +5285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_CollisionDetection
@@ -5298,6 +5298,10 @@ PrefabInstance:
     - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: canAct
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: airMultiplier

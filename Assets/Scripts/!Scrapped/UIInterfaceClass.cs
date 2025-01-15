@@ -14,9 +14,6 @@ public class UIInterface : UIClass
     private GameObject SpeedBar;
     private GameObject HealthBackground;
     private GameObject HealthBar;
-
-    private bool speedIdle = false;
-    private bool HealthIdle = false;
     // Start is called before the first frame update
     void Start()
     {

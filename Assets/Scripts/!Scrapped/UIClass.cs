@@ -40,7 +40,6 @@ public class UIClass : MonoBehaviour
         float start = obj.GetComponent<Image>().color.a;
         for (float i = 0; i < 1.05; i += 0.05f)
         {
-            print(i);
             yield return new WaitForSeconds((1/fps)*t);
             obj.GetComponent<Image>().color = new Color(obj.GetComponent<Image>().color.r,
                                                         obj.GetComponent<Image>().color.g,

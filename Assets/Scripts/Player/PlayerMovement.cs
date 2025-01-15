@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
     public float crouchYScale;
     private float startYScale;
 
+    [Header("Climbing")]
+    bool readyTocling;
+    bool readyToClimb;
+
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
@@ -75,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+        readyTocling = true;
+        readyToClimb = false;
 
         startYScale = transform.localScale.y;
     }
@@ -83,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
     {
         // Ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        if (grounded)
+            readyTocling = true;
 
         MyInput();
         SpeedControl();
@@ -127,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
 
         // Start crouch
         if (Input.GetKeyDown(crouchKey))
@@ -238,15 +247,26 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // On ground
-        if(grounded)
+        if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
         // In air
-        else if(!grounded)
+        else if (!grounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+
+        }
 
         // Turn gravity off while on slope
         rb.useGravity = !OnSlope();
+    }
+
+    private void Cling()
+    {
+    }
+
+    private void Climb()
+    {
     }
 
     private void SpeedControl()
@@ -323,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
         {
             TimeCount++;
             //print(TimeCount);
-            if (TimeCount >= 25)
+            if (TimeCount >= 100)
             {
                 TimeCount = 0;
                 moveSpeed += walkAcceleration;
@@ -334,6 +354,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
     public float GetMoveSpeed()
     {
         return moveSpeed;

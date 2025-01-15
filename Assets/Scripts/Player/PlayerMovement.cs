@@ -22,9 +22,13 @@ public class PlayerMovement : MonoBehaviour
     bool readyToJump;
 
     [Header("Crouching")]
+    public float slideSpeed;
+    public float slideYScale;
+    public float slideDrag;
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
+    private float startDrag;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -66,7 +70,9 @@ public class PlayerMovement : MonoBehaviour
         walking,
         sprinting,
         crouching,
-        air
+        air,
+        sliding,
+        idle
     }
 
     private void Start()
@@ -77,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
 
         startYScale = transform.localScale.y;
+        startDrag = groundDrag;
     }
 
     private void Update()
@@ -105,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = 0;
         */
+        Debug.Log(""+state);
     }
         
 
@@ -128,18 +136,40 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        // Start crouch
-        if (Input.GetKeyDown(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        }
+        
+            // Start crouch
+            if (Input.GetKeyDown(crouchKey))
+            {
+                if (state == MovementState.idle)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                    rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+                }
+                else if (state == MovementState.walking || state == MovementState.sliding)
+                {
+                    state = MovementState.sliding;
+                    transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
+                    rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+                    groundDrag = slideDrag;
+                    
+                }
+            }
 
         // Stop crouch
-        if (Input.GetKeyUp(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-        }
+            if (Input.GetKeyUp(crouchKey))
+            {
+                if (state == MovementState.idle)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                }
+                else if (state == MovementState.walking || state == MovementState.sliding)
+                {
+                    state = MovementState.sliding; state = MovementState.sliding;
+                    transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                    groundDrag = startDrag;
+                }
+            }
+
 
         // Test button
         if (Input.GetKeyDown(testKey1))
@@ -209,8 +239,11 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Walking
         else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
+            if (Input.GetKey(crouchKey))
+                state = MovementState.sliding;
             state = MovementState.walking;
         }
+
         else if (grounded)
         {
             moveSpeed = 1;
@@ -221,6 +254,7 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.air;
         }
+
     }
 
     private void MovePlayer()
@@ -254,9 +288,23 @@ public class PlayerMovement : MonoBehaviour
         // Limiting speed on slope
         if (OnSlope() && !exitingSlope)
         {
-            if(rb.velocity.magnitude > moveSpeed)
+            if (rb.velocity.magnitude > moveSpeed)
                 rb.velocity = rb.velocity.normalized * moveSpeed;
         }
+
+        /*
+        else if (state == MovementState.sliding)
+        {
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            // Limit velocity if needed
+            if (flatVel.magnitude > slideSpeed)
+            {
+                Vector3 limitedVel = flatVel.normalized * slideSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
+        }
+        */
 
         // Limiting speed on ground or in air
         else

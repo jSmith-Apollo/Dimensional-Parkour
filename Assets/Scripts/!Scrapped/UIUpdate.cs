@@ -11,7 +11,6 @@ public class UIUpdate : MonoBehaviour
     private static GameObject VelocityBar;
     private static GameObject HealthbarBg;
     private static GameObject HealthBar;
-    public float TempHealth;
     private bool FadeOutRun;
     private bool FadeInRun;
     // Start is called before the first frame update
@@ -65,7 +64,10 @@ public class UIUpdate : MonoBehaviour
         FadeOutRun = true;
         //Check if the player is not running for more than a second//
         yield return new WaitForSeconds(0.5f);
-        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() > 1){ yield break; }
+        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() > 1){
+            FadeOutRun = false;
+            yield break; 
+        }
 
         //Fade out UI//
         for (float i = 0; i < 1.05; i += 0.05f)
@@ -85,7 +87,10 @@ public class UIUpdate : MonoBehaviour
         FadeInRun = true;
         yield return new WaitForSeconds(0.5f);
         //Check if the player is  running for more than a second//
-        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() <= 1) { yield break; }
+        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() <= 1) {
+            FadeInRun= false; 
+            yield break; 
+        }
         
         //Fade in UI//
         for (float i = 0; i < 1.05; i += 0.05f)
@@ -120,18 +125,18 @@ public class UIUpdate : MonoBehaviour
         }
         //--------------------------//
         // HealthBar FadeIn and out //
-        if (TempHealth < 100 && HealthbarBg.GetComponent<Image>().color.a <= 0.9)
+        if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() < 100 && HealthbarBg.GetComponent<Image>().color.a <= 0.9)
         {
             StartCoroutine(FadeInUI(HealthbarBg));
         }
-        else if (TempHealth >= 100 && HealthbarBg.GetComponent<Image>().color.a >= 0.9)
+        else if (GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() >= 100 && HealthbarBg.GetComponent<Image>().color.a >= 0.9)
         {
             StartCoroutine(FadeOutUI(HealthbarBg));
         }
         //---------------------------//
         //Update Velocity and Health//
         VelocityBar.transform.localScale = new Vector3(movespeed / GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed(), VelocityBar.transform.localScale.y, VelocityBar.transform.localScale.z);
-        HealthBar.transform.localScale = new Vector3(TempHealth / 100, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
+        HealthBar.transform.localScale = new Vector3(GameObject.Find("PlayerV2").GetComponent<PlayerClass>().GetHealth() / 100, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
         if (VelocitybarBg.GetComponent<Image>().color.a != VelocityBar.GetComponent<Image>().color.a)
         {
             VelocityBar.GetComponent<Image>().color = new Color(VelocityBar.GetComponent<Image>().color.r,

@@ -250,12 +250,9 @@ public class PlayerMovement : MonoBehaviour
         if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
-        // In air
-        else if (!grounded)
-        {
+        // In air moving forward
+        else if (!grounded && !Physics.Raycast(transform.position, transform.forward, 10) && !Physics.Raycast(transform.position, transform.forward * -1, 10) && !Physics.Raycast(transform.position, transform.right, 10) && !Physics.Raycast(transform.position, transform.right * -1, 10) && verticalInput == 1)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-
-        }
 
         // Turn gravity off while on slope
         rb.useGravity = !OnSlope();

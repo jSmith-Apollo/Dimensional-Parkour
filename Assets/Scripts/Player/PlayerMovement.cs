@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     private int TimeCount = 0;
+    private int SlideTime = 0;
 
     [Header("Movement")]
     private float moveSpeed;
@@ -22,13 +23,20 @@ public class PlayerMovement : MonoBehaviour
     bool readyToJump;
 
     [Header("Crouching")]
-    public float slideSpeed;
-    public float slideYScale;
-    public float slideDrag;
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
     private float startDrag;
+
+    [Header("Sliding")]
+    public float slideSpeed;
+    public float slideYScale;
+    public float slideDrag;
+    private float slideSpeedAtTime;
+    public float slideCooldown;
+    bool readyToSlide;
+    public float slideDecel;
+    public float slideCurrentSpeed;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -84,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
         startYScale = transform.localScale.y;
         startDrag = groundDrag;
+        slideCurrentSpeed = slideSpeed;
     }
 
     private void Update()
@@ -112,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = 0;
         */
+
         Debug.Log(""+state);
     }
         
@@ -138,22 +148,24 @@ public class PlayerMovement : MonoBehaviour
 
         
             // Start crouch
-            if (Input.GetKeyDown(crouchKey))
+        if (Input.GetKeyDown(crouchKey))
+        {
+            if (state == MovementState.idle)
             {
-                if (state == MovementState.idle)
-                {
                     transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
                     rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-                }
-                else if (state == MovementState.walking || state == MovementState.sliding)
-                {
-                    state = MovementState.sliding;
-                    transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
-                    rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-                    groundDrag = slideDrag;
-                    
-                }
             }
+
+            else if (state == MovementState.walking || state == MovementState.sliding && readyToSlide)
+            {
+                state = MovementState.sliding;
+                //readyToSlide = false;
+
+                Slide();
+
+                Invoke(nameof(ResetSlide), slideCooldown);
+            }
+        }
 
         // Stop crouch
             if (Input.GetKeyUp(crouchKey))
@@ -240,14 +252,21 @@ public class PlayerMovement : MonoBehaviour
         else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (Input.GetKey(crouchKey))
+            {
                 state = MovementState.sliding;
-            state = MovementState.walking;
+                moveSpeed = slideCurrentSpeed;
+            }
+            else
+                state = MovementState.walking;
         }
 
+        // Mode - Idle
         else if (grounded)
         {
             moveSpeed = 1;
+            state = MovementState.idle;
         }
+        
 
         // Mode - Air
         else
@@ -339,6 +358,48 @@ public class PlayerMovement : MonoBehaviour
         exitingSlope = false;
     }
 
+    public void Slide()
+    {
+        exitingSlope = true;
+        //Debug.Log("exiting a slope");
+
+        transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        //rb.AddForce(moveDirection.normalized * slideSpeedAtTime * 10f, ForceMode.Impulse);
+        groundDrag = slideDrag;
+
+        
+        while (slideCurrentSpeed > 0f )
+        {
+            SlideTime++;
+            IEnumerator helper = SlideHelper();
+            StartCoroutine(helper);
+        }
+
+        if (slideCurrentSpeed == 0f)
+        {
+            ResetSlide();
+        }
+        
+    }
+
+    private IEnumerator SlideHelper()
+    {
+        slideCurrentSpeed -= 0.5f;
+        yield return new WaitForSeconds(1f);
+            
+    }
+
+    private void ResetSlide()
+    {
+        readyToSlide = true;
+
+        SlideTime = 0;
+        slideCurrentSpeed = slideSpeed;
+
+        exitingSlope = false;
+    }
+
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
@@ -366,6 +427,7 @@ public class PlayerMovement : MonoBehaviour
     private void VelocityUpdate()
     {
         jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+        slideSpeedAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
         if (state == MovementState.walking)
         {
@@ -381,7 +443,32 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+
+
+        //if (state == MovementState.sliding)
+        //{
+        //    SlideTime++;
+
+        //    if (SlideTime >= 25)
+        //    {
+        //        TimeCount = 0;
+        //        moveSpeed -= slideDecel;
+
+        //        if (moveSpeed <= 1)
+        //        {
+        //            state = MovementState.walking;
+        //        }
+        //        /*
+        //        if (moveSpeed <= slideSpeed)
+        //        {
+        //            moveSpeed = slideSpeed;
+        //        }
+        //        */
+        //    }
+        //}
+
     }
+
     public float GetMoveSpeed()
     {
         return moveSpeed;

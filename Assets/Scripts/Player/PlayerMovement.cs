@@ -263,11 +263,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 state = MovementState.sliding;
                 moveSpeed = slideCurrentSpeed;
-                if (slideCurrentSpeed <= 1)
-                {
-                    state = MovementState.crouching;
-                    moveSpeed = crouchSpeed;
-                }
             }
             else
                 state = MovementState.walking;
@@ -332,20 +327,6 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = rb.velocity.normalized * moveSpeed;
         }
 
-        /*
-        else if (state == MovementState.sliding)
-        {
-            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-            // Limit velocity if needed
-            if (flatVel.magnitude > slideSpeed)
-            {
-                Vector3 limitedVel = flatVel.normalized * slideSpeed;
-                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            }
-        }
-        */
-
         // Limiting speed on ground or in air
         else
         {
@@ -386,7 +367,6 @@ public class PlayerMovement : MonoBehaviour
 
         transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        rb.AddForce(lockedDir * slideForceAtTime * 10f, ForceMode.Impulse);
         groundDrag = slideDrag;
 
         
@@ -486,12 +466,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     state = MovementState.walking;
                 }
-                /*
-                if (moveSpeed <= slideSpeed)
-                {
-                    moveSpeed = slideSpeed;
-                }
-                */
+                
             }
         }
 

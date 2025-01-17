@@ -32,10 +32,11 @@ public class PlayerMovement : MonoBehaviour
     public float slideSpeed;
     public float slideYScale;
     public float slideDrag;
-    private float slideSpeedAtTime;
+    private float slideForceAtTime;
     public float slideCooldown;
     bool readyToSlide;
     public float slideDecel;
+    private float startSlideDecel;
     public float slideCurrentSpeed;
 
     [Header("Keybinds")]
@@ -64,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
+    Vector3 lockedDir;
 
     Rigidbody rb;
 
@@ -93,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
         startYScale = transform.localScale.y;
         startDrag = groundDrag;
         slideCurrentSpeed = slideSpeed;
+        startSlideDecel = slideDecel;
     }
 
     private void Update()
@@ -150,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
             // Start crouch
         if (Input.GetKeyDown(crouchKey))
         {
-            if (state == MovementState.idle)
+            if (state == MovementState.idle || slideCurrentSpeed <= 1)
             {
                     transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
                     rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
@@ -158,12 +161,12 @@ public class PlayerMovement : MonoBehaviour
 
             else if (state == MovementState.walking || state == MovementState.sliding && readyToSlide)
             {
+                if (state == MovementState.walking)
+                    lockedDir = moveDirection.normalized;
                 state = MovementState.sliding;
                 //readyToSlide = false;
 
                 Slide();
-
-                Invoke(nameof(ResetSlide), slideCooldown);
             }
         }
 
@@ -176,10 +179,15 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (state == MovementState.walking || state == MovementState.sliding)
                 {
-                    state = MovementState.sliding; state = MovementState.sliding;
+                    //Resets the sliding speed
+                    slideCurrentSpeed = slideSpeed;
+                    readyToSlide = false;
+                    state = MovementState.walking;
                     transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
                     groundDrag = startDrag;
-                }
+                    Invoke(nameof(ResetSlide), slideCooldown);
+
+            }
             }
 
 
@@ -255,6 +263,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 state = MovementState.sliding;
                 moveSpeed = slideCurrentSpeed;
+                if (slideCurrentSpeed <= 1)
+                {
+                    state = MovementState.crouching;
+                    moveSpeed = crouchSpeed;
+                }
             }
             else
                 state = MovementState.walking;
@@ -291,8 +304,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // On ground
-        if(grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        if (grounded)
+        {
+            if (state == MovementState.sliding)
+            {
+                rb.AddForce(lockedDir * moveSpeed * 10f, ForceMode.Force);
+            }
+            else
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+            
 
         // In air
         else if(!grounded)
@@ -365,36 +386,42 @@ public class PlayerMovement : MonoBehaviour
 
         transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        //rb.AddForce(moveDirection.normalized * slideSpeedAtTime * 10f, ForceMode.Impulse);
+        rb.AddForce(lockedDir * slideForceAtTime * 10f, ForceMode.Impulse);
         groundDrag = slideDrag;
 
         
-        while (slideCurrentSpeed > 0f )
-        {
             SlideTime++;
             IEnumerator helper = SlideHelper();
             StartCoroutine(helper);
-        }
-
-        if (slideCurrentSpeed == 0f)
-        {
-            ResetSlide();
-        }
         
     }
 
     private IEnumerator SlideHelper()
     {
-        slideCurrentSpeed -= 0.5f;
-        yield return new WaitForSeconds(1f);
+        
+        while (state == MovementState.sliding)
+        {
+            slideCurrentSpeed -= slideDecel;
+            if (slideCurrentSpeed <= 1)
+            {
+                ResetSlide();
+                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                state = MovementState.crouching;
+                yield break;
+            }
+            yield return new WaitForSeconds(0.25f);
+        }
+        
             
     }
 
     private void ResetSlide()
     {
         readyToSlide = true;
-
+        lockedDir = moveDirection.normalized;
         SlideTime = 0;
+        slideDecel = startSlideDecel;
         slideCurrentSpeed = slideSpeed;
 
         exitingSlope = false;
@@ -427,7 +454,7 @@ public class PlayerMovement : MonoBehaviour
     private void VelocityUpdate()
     {
         jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
-        slideSpeedAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
+        slideForceAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
         if (state == MovementState.walking)
         {
@@ -445,27 +472,28 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        //if (state == MovementState.sliding)
-        //{
-        //    SlideTime++;
+        if (state == MovementState.sliding)
+        {
+            SlideTime++;
 
-        //    if (SlideTime >= 25)
-        //    {
-        //        TimeCount = 0;
-        //        moveSpeed -= slideDecel;
+            if (SlideTime >= 25)
+            {
+                SlideTime = 0;
+                moveSpeed -= slideDecel;
+                slideDecel += 0.01f;
 
-        //        if (moveSpeed <= 1)
-        //        {
-        //            state = MovementState.walking;
-        //        }
-        //        /*
-        //        if (moveSpeed <= slideSpeed)
-        //        {
-        //            moveSpeed = slideSpeed;
-        //        }
-        //        */
-        //    }
-        //}
+                if (moveSpeed <= 1)
+                {
+                    state = MovementState.walking;
+                }
+                /*
+                if (moveSpeed <= slideSpeed)
+                {
+                    moveSpeed = slideSpeed;
+                }
+                */
+            }
+        }
 
     }
 

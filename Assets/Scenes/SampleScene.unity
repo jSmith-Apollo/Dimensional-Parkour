@@ -5293,7 +5293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: slideDecel
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: slideSpeed
@@ -5301,7 +5301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: slideYScale
-      value: 0.33
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: slideCooldown

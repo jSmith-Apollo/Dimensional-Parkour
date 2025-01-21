@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     private int TimeCount = 0;
+    private int SlideTime = 0;
 
     [Header("Movement")]
     private float moveSpeed;
@@ -25,6 +26,18 @@ public class PlayerMovement : MonoBehaviour
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
+    private float startDrag;
+
+    [Header("Sliding")]
+    public float slideSpeed;
+    public float slideYScale;
+    public float slideDrag;
+    private float slideForceAtTime;
+    public float slideCooldown;
+    bool readyToSlide;
+    public float slideDecel;
+    private float startSlideDecel;
+    public float slideCurrentSpeed;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -52,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
+    Vector3 lockedDir;
 
     Rigidbody rb;
 
@@ -66,7 +80,9 @@ public class PlayerMovement : MonoBehaviour
         walking,
         sprinting,
         crouching,
-        air
+        air,
+        sliding,
+        idle
     }
 
     private void Start()
@@ -77,6 +93,9 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
 
         startYScale = transform.localScale.y;
+        startDrag = groundDrag;
+        slideCurrentSpeed = slideSpeed;
+        startSlideDecel = slideDecel;
     }
 
     private void Update()
@@ -105,6 +124,8 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = 0;
         */
+
+        Debug.Log(""+state);
     }
         
 
@@ -128,18 +149,34 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        // Start crouch
+        
+            // Start crouch
         if (Input.GetKeyDown(crouchKey))
         {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            if (state == MovementState.idle || slideCurrentSpeed <= 1)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            }
+
+            else if (state == MovementState.walking || state == MovementState.sliding && readyToSlide)
+            {
+                if (state == MovementState.walking)
+                    lockedDir = moveDirection.normalized;
+                state = MovementState.sliding;
+                //readyToSlide = false;
+
+                Slide();
+            }
         }
 
         // Stop crouch
         if (Input.GetKeyUp(crouchKey))
         {
+            Invoke(nameof(ResetSlide), slideCooldown);
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
+
 
         // Test button
         if (Input.GetKeyDown(testKey1))
@@ -195,8 +232,16 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Crouching
         if (Input.GetKey(crouchKey))
         {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
+            if (state == MovementState.idle || slideCurrentSpeed <= 1)
+            {
+                state = MovementState.crouching;
+                moveSpeed = crouchSpeed;
+            }
+            else if (state == MovementState.sliding)
+            {
+                state = MovementState.sliding;
+                moveSpeed = slideCurrentSpeed;
+            }
         }
 
         // Mode - Sprinting
@@ -209,18 +254,38 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Walking
         else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            state = MovementState.walking;
+            if (Input.GetKey(crouchKey))
+            {
+                if (state == MovementState.crouching)
+                {
+                    state = MovementState.crouching;
+                    moveSpeed = crouchSpeed;
+                }
+                else
+                {
+                    state = MovementState.sliding;
+                    moveSpeed = slideCurrentSpeed;
+                }
+            }
+            else
+                state = MovementState.walking;
+                
         }
+
+        // Mode - Idle
         else if (grounded)
         {
             moveSpeed = 1;
+            state = MovementState.idle;
         }
+        
 
         // Mode - Air
         else
         {
             state = MovementState.air;
         }
+
     }
 
     private void MovePlayer()
@@ -238,8 +303,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // On ground
-        if(grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        if (grounded)
+        {
+            if (state == MovementState.sliding)
+            {
+                rb.AddForce(lockedDir * moveSpeed * 10f, ForceMode.Force);
+            }
+            else
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+            
 
         // In air
         else if(!grounded)
@@ -254,7 +327,7 @@ public class PlayerMovement : MonoBehaviour
         // Limiting speed on slope
         if (OnSlope() && !exitingSlope)
         {
-            if(rb.velocity.magnitude > moveSpeed)
+            if (rb.velocity.magnitude > moveSpeed)
                 rb.velocity = rb.velocity.normalized * moveSpeed;
         }
 
@@ -291,6 +364,54 @@ public class PlayerMovement : MonoBehaviour
         exitingSlope = false;
     }
 
+    public void Slide()
+    {
+        exitingSlope = true;
+        //Debug.Log("exiting a slope");
+
+        transform.localScale = new Vector3(transform.localScale.x, slideYScale, transform.localScale.z);
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        groundDrag = slideDrag;
+
+        
+            SlideTime++;
+            IEnumerator helper = SlideHelper();
+            StartCoroutine(helper);
+        
+    }
+
+    private IEnumerator SlideHelper()
+    {
+        
+        while (state == MovementState.sliding)
+        {
+            slideCurrentSpeed -= slideDecel;
+            if (slideCurrentSpeed <= 1)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                state = MovementState.crouching;
+                moveSpeed = crouchSpeed;
+                ResetSlide();
+                yield break;
+            }
+            yield return new WaitForSeconds(0.25f);
+        }
+        
+            
+    }
+
+    private void ResetSlide()
+    {
+        readyToSlide = true;
+        lockedDir = moveDirection.normalized;
+        SlideTime = 0;
+        slideDecel = startSlideDecel;
+        slideCurrentSpeed = slideSpeed;
+
+        exitingSlope = false;
+    }
+
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
@@ -318,6 +439,7 @@ public class PlayerMovement : MonoBehaviour
     private void VelocityUpdate()
     {
         jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+        slideForceAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
         if (state == MovementState.walking)
         {
@@ -333,7 +455,28 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+
+
+        if (state == MovementState.sliding)
+        {
+            SlideTime++;
+
+            if (SlideTime >= 25)
+            {
+                SlideTime = 0;
+                moveSpeed -= slideDecel;
+                slideDecel += 0.01f;
+
+                if (moveSpeed <= 1)
+                {
+                    state = MovementState.walking;
+                }
+                
+            }
+        }
+
     }
+
     public float GetMoveSpeed()
     {
         return moveSpeed;

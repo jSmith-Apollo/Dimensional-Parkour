@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 152538525}
   - component: {fileID: 152538524}
   - component: {fileID: 152538523}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1002,7 +1002,7 @@ GameObject:
   - component: {fileID: 271715219}
   - component: {fileID: 271715218}
   - component: {fileID: 271715217}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2654,7 +2654,7 @@ GameObject:
   - component: {fileID: 1002367495}
   - component: {fileID: 1002367494}
   - component: {fileID: 1002367493}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3147,7 +3147,7 @@ GameObject:
   - component: {fileID: 1300578228}
   - component: {fileID: 1300578227}
   - component: {fileID: 1300578226}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4354,7 +4354,7 @@ GameObject:
   - component: {fileID: 1883052566}
   - component: {fileID: 1883052565}
   - component: {fileID: 1883052564}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Slope 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5285,7 +5285,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: slideDrag
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: slideDecel
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: slideSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: slideYScale
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: slideCooldown
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5813595556439253396, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_CollisionDetection
@@ -5298,6 +5318,10 @@ PrefabInstance:
     - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: canAct
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8062885516925228611, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: airMultiplier

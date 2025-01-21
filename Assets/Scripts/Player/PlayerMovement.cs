@@ -155,8 +155,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (state == MovementState.idle || slideCurrentSpeed <= 1)
             {
-                    transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-                    rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
             }
 
             else if (state == MovementState.walking || state == MovementState.sliding && readyToSlide)
@@ -171,24 +171,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Stop crouch
-            if (Input.GetKeyUp(crouchKey))
-            {
-                if (state == MovementState.idle)
-                {
-                    transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-                }
-                else if (state == MovementState.walking || state == MovementState.sliding)
-                {
-                    //Resets the sliding speed
-                    slideCurrentSpeed = slideSpeed;
-                    readyToSlide = false;
-                    state = MovementState.walking;
-                    transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-                    groundDrag = startDrag;
-                    Invoke(nameof(ResetSlide), slideCooldown);
-
-            }
-            }
+        if (Input.GetKeyUp(crouchKey))
+        {
+            Invoke(nameof(ResetSlide), slideCooldown);
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        }
 
 
         // Test button
@@ -245,8 +232,16 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Crouching
         if (Input.GetKey(crouchKey))
         {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
+            if (state == MovementState.idle || slideCurrentSpeed <= 1)
+            {
+                state = MovementState.crouching;
+                moveSpeed = crouchSpeed;
+            }
+            else if (state == MovementState.sliding)
+            {
+                state = MovementState.sliding;
+                moveSpeed = slideCurrentSpeed;
+            }
         }
 
         // Mode - Sprinting
@@ -261,11 +256,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKey(crouchKey))
             {
-                state = MovementState.sliding;
-                moveSpeed = slideCurrentSpeed;
+                if (state == MovementState.crouching)
+                {
+                    state = MovementState.crouching;
+                    moveSpeed = crouchSpeed;
+                }
+                else
+                {
+                    state = MovementState.sliding;
+                    moveSpeed = slideCurrentSpeed;
+                }
             }
             else
                 state = MovementState.walking;
+                
         }
 
         // Mode - Idle
@@ -384,10 +388,11 @@ public class PlayerMovement : MonoBehaviour
             slideCurrentSpeed -= slideDecel;
             if (slideCurrentSpeed <= 1)
             {
-                ResetSlide();
                 transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
                 transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
                 state = MovementState.crouching;
+                moveSpeed = crouchSpeed;
+                ResetSlide();
                 yield break;
             }
             yield return new WaitForSeconds(0.25f);

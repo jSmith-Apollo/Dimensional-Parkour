@@ -19,16 +19,13 @@ public class PlayerMovement : MonoBehaviour
     private float jumpForceAtTime;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
+    public bool readyToJump;
 
     [Header("Crouching")]
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
-
-    [Header("Climbing")]
-    bool readyTocling;
-    bool readyToClimb;
+    
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -70,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
         walking,
         sprinting,
         crouching,
+        climbing,
+        clinging,
         air
     }
 
@@ -79,9 +78,6 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
-        readyTocling = true;
-        readyToClimb = false;
-
         startYScale = transform.localScale.y;
     }
 
@@ -89,8 +85,6 @@ public class PlayerMovement : MonoBehaviour
     {
         // Ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        if (grounded)
-            readyTocling = true;
 
         MyInput();
         SpeedControl();
@@ -126,8 +120,8 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        // When to jump
-        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()))
+        // When to jump (Checks if ready to jump, on ground or a slope, and not close to a wall and can climb)
+        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling())
         {
             readyToJump = false;
 
@@ -135,7 +129,6 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-
 
         // Start crouch
         if (Input.GetKeyDown(crouchKey))
@@ -201,34 +194,37 @@ public class PlayerMovement : MonoBehaviour
 
     public void StateHandler()
     {
-        // Mode - Crouching
-        if (Input.GetKey(crouchKey))
+        if (state != MovementState.climbing && state != MovementState.clinging)
         {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
-        }
+            // Mode - Crouching
+            if (Input.GetKey(crouchKey))
+            {
+                state = MovementState.crouching;
+                moveSpeed = crouchSpeed;
+            }
 
-        // Mode - Sprinting
-        if (grounded && Input.GetKey(sprintKey))
-        {
-            state = MovementState.sprinting;
-            moveSpeed = sprintSpeed;
-        }
+            // Mode - Sprinting
+            if (grounded && Input.GetKey(sprintKey))
+            {
+                state = MovementState.sprinting;
+                moveSpeed = sprintSpeed;
+            }
 
-        // Mode - Walking
-        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            state = MovementState.walking;
-        }
-        else if (grounded)
-        {
-            moveSpeed = 1;
-        }
+            // Mode - Walking
+            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                state = MovementState.walking;
+            }
+            else if (grounded)
+            {
+                moveSpeed = 1;
+            }
 
-        // Mode - Air
-        else
-        {
-            state = MovementState.air;
+            // Mode - Air
+            else
+            {
+                state = MovementState.air;
+            }
         }
     }
 
@@ -250,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
         if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
-        // In air moving forward
+        // In air, also checking if not running into a wall
         else if (!grounded && !Physics.Raycast(transform.position, transform.forward, 10) && !Physics.Raycast(transform.position, transform.forward * -1, 10) && !Physics.Raycast(transform.position, transform.right, 10) && !Physics.Raycast(transform.position, transform.right * -1, 10) && verticalInput == 1)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
@@ -260,11 +256,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Cling()
     {
+
     }
 
-    private void Climb()
-    {
-    }
 
     private void SpeedControl()
     {
@@ -355,6 +349,14 @@ public class PlayerMovement : MonoBehaviour
     public float GetMoveSpeed()
     {
         return moveSpeed;
+    }
+    
+    public void SetMoveSpeed(float movespeed)
+        { moveSpeed = movespeed; }
+
+    public bool GetGrounded()
+    {
+        return grounded;
     }
     public float GetMaxSpeed()
     {

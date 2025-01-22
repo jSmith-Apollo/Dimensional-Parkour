@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+        readyToSlide = true;
 
         startYScale = transform.localScale.y;
         startDrag = groundDrag;
@@ -125,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
         */
 
-        Debug.Log(""+state);
+        //Debug.Log(""+state);
     }
         
 
@@ -157,15 +158,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
                 rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+                //readyToSlide = false;
             }
 
-            else if (state == MovementState.walking || state == MovementState.sliding && readyToSlide)
+            else if (state == MovementState.walking || state == MovementState.sliding)
             {
                 if (state == MovementState.walking)
                     lockedDir = moveDirection.normalized;
                 state = MovementState.sliding;
                 //readyToSlide = false;
-
                 Slide();
             }
         }
@@ -173,6 +174,8 @@ public class PlayerMovement : MonoBehaviour
         // Stop crouch
         if (Input.GetKeyUp(crouchKey))
         {
+            readyToSlide = false;
+            slideCurrentSpeed = slideSpeed;
             Invoke(nameof(ResetSlide), slideCooldown);
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
@@ -265,6 +268,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     state = MovementState.sliding;
                     moveSpeed = slideCurrentSpeed;
+                    readyToSlide = false;
                 }
             }
             else
@@ -307,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (state == MovementState.sliding)
             {
+                readyToSlide = false;
                 rb.AddForce(lockedDir * moveSpeed * 10f, ForceMode.Force);
             }
             else
@@ -373,10 +378,11 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         groundDrag = slideDrag;
 
-        
+            //readyToSlide = false;
             SlideTime++;
             IEnumerator helper = SlideHelper();
             StartCoroutine(helper);
+            
         
     }
 
@@ -385,6 +391,7 @@ public class PlayerMovement : MonoBehaviour
         
         while (state == MovementState.sliding)
         {
+            //readyToSlide = false;
             slideCurrentSpeed -= slideDecel;
             if (slideCurrentSpeed <= 1)
             {
@@ -392,7 +399,8 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
                 state = MovementState.crouching;
                 moveSpeed = crouchSpeed;
-                ResetSlide();
+
+                Invoke(nameof(ResetSlide), slideCooldown);
                 yield break;
             }
             yield return new WaitForSeconds(0.25f);
@@ -403,6 +411,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetSlide()
     {
+        print("Resetting slide");
         readyToSlide = true;
         lockedDir = moveDirection.normalized;
         SlideTime = 0;

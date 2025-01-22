@@ -4916,10 +4916,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   climbTime: 1
+  KickOffStrength: 10
   ClingCooldown: 1
-  Mover: {fileID: 0}
+  Mover: {fileID: 2033303621}
   orientation: {fileID: 972628696}
   rb: {fileID: 2033303615}
+--- !u!114 &2033303621 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+  m_PrefabInstance: {fileID: 2947433761204981354}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263405981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375f594dcfb5d2d4fbbde0fc0619093f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2082450440
 GameObject:
   m_ObjectHideFlags: 0

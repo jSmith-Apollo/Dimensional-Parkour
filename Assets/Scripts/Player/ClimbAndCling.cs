@@ -11,6 +11,7 @@ public class ClimbAndCling : MonoBehaviour
     [Header("Climbing variables")]
     private bool canCling;
     public float climbTime;
+    public float KickOffStrength;
     private bool Debounce;
     public float ClingCooldown;
 
@@ -26,8 +27,6 @@ public class ClimbAndCling : MonoBehaviour
     void Start()
     {
         ClingReset = StopCling();
-
-        Mover = gameObject.GetComponent<PlayerMovement>();
         canCling = true;
         Debounce = false;
     }
@@ -47,11 +46,14 @@ public class ClimbAndCling : MonoBehaviour
             Invoke(nameof(ResetDebounce), 0.5f);
         }
         //Check if player is able to climnb
-        else if (Input.GetKey(Mover.jumpKey) && Mover.state == PlayerMovement.MovementState.clinging && Physics.SphereCast(transform.position, 0, transform.forward, out RaycastHit hitInfo,2, WhatIsWall) && !Debounce)
+        else if (Input.GetKey(Mover.jumpKey) && Mover.state == PlayerMovement.MovementState.clinging && Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo,2, WhatIsWall) && !Debounce)
         {
-            print("Climb");
-
             Climb();
+        }
+        //Check if wall is behind to KickOff
+        else if (Input.GetKey(Mover.jumpKey) && (Mover.state == PlayerMovement.MovementState.clinging || Mover.state == PlayerMovement.MovementState.climbing) && Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 3, WhatIsWall) && !Debounce)
+        {
+            KickOff();
         }
 
         if (Mover.state == PlayerMovement.MovementState.clinging)
@@ -60,7 +62,7 @@ public class ClimbAndCling : MonoBehaviour
         }
         else if (Mover.state == PlayerMovement.MovementState.climbing)
         {
-            rb.velocity = new Vector3(0, 5, 0);
+            rb.velocity = new Vector3(0, 3, 0);
         }
 
         if (Mover.GetGrounded() && !canCling)
@@ -72,11 +74,20 @@ public class ClimbAndCling : MonoBehaviour
     private void cling()
     {
         Mover.state = PlayerMovement.MovementState.clinging;
-        Mover.SetMoveSpeed(0);
+        Mover.SetMoveSpeed(2);
         StartCoroutine(ClingReset);
         
     }
  
+    private void KickOff()
+    {
+        print("KickOff");
+        Mover.state = PlayerMovement.MovementState.air;
+        StopCoroutine(ClingReset);
+        Mover.SetMoveSpeed(KickOffStrength*2);
+        rb.velocity = orientation.forward * KickOffStrength * 10f + orientation.up * KickOffStrength/5 ;
+
+    }
     private void Climb()
     {
         print("climbing");
@@ -89,8 +100,8 @@ public class ClimbAndCling : MonoBehaviour
 
     private void StopClimb()
     {
-        Mover.state = PlayerMovement.MovementState.walking;
-        Mover.SetMoveSpeed(1);
+        Mover.state = PlayerMovement.MovementState.air;
+        Mover.SetMoveSpeed(2);
         Invoke(nameof(ResetCooldown), ClingCooldown);
     }
 
@@ -116,6 +127,6 @@ public class ClimbAndCling : MonoBehaviour
 
     public bool ReadyToCling()
     {
-        return Physics.SphereCast(transform.position, 0, transform.forward, out RaycastHit hitInfo, 1, WhatIsWall) && Mover.state != PlayerMovement.MovementState.clinging;
+        return Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 1, WhatIsWall) && Mover.state != PlayerMovement.MovementState.clinging;
     }
 }

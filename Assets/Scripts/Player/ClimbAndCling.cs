@@ -26,7 +26,7 @@ public class ClimbAndCling : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ClingReset = StopCling();
+        ClingReset = StopCling(2);
         canCling = true;
         Debounce = false;
     }
@@ -67,6 +67,7 @@ public class ClimbAndCling : MonoBehaviour
 
         if (Mover.GetGrounded() && !canCling)
         {
+            StartCoroutine(StopCling(0.1f));
             Invoke(nameof(ResetCooldown), ClingCooldown);
         }
     }
@@ -108,12 +109,11 @@ public class ClimbAndCling : MonoBehaviour
         Invoke(nameof(ResetCooldown), ClingCooldown);
     }
 
-    private IEnumerator StopCling()
+    private IEnumerator StopCling(float t)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(t);
         print("clingEnded");
         Mover.state = PlayerMovement.MovementState.air;
-        Mover.SetMoveSpeed(1);
 
  }
 

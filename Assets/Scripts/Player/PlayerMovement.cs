@@ -254,11 +254,6 @@ public class PlayerMovement : MonoBehaviour
         rb.useGravity = !OnSlope();
     }
 
-    private void Cling()
-    {
-
-    }
-
 
     private void SpeedControl()
     {

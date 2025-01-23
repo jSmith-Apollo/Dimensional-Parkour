@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     bool readyToSlide;
     public float slideDecel;
     private float startSlideDecel;
-    public float slideCurrentSpeed;
+    float slideCurrentSpeed;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -82,7 +82,9 @@ public class PlayerMovement : MonoBehaviour
         crouching,
         air,
         sliding,
-        idle
+        idle,
+        clinging,
+        climbing,
     }
 
     private void Start()
@@ -232,64 +234,66 @@ public class PlayerMovement : MonoBehaviour
 
     public void StateHandler()
     {
-        // Mode - Crouching
-        if (Input.GetKey(crouchKey))
+        if (state != MovementState.climbing && state != MovementState.clinging)
         {
-            if (state == MovementState.idle || slideCurrentSpeed <= 1)
-            {
-                state = MovementState.crouching;
-                moveSpeed = crouchSpeed;
-            }
-            else if (state == MovementState.sliding)
-            {
-                state = MovementState.sliding;
-                moveSpeed = slideCurrentSpeed;
-            }
-        }
-
-        // Mode - Sprinting
-        if (grounded && Input.GetKey(sprintKey))
-        {
-            state = MovementState.sprinting;
-            moveSpeed = sprintSpeed;
-        }
-
-        // Mode - Walking
-        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
+            // Mode - Crouching
             if (Input.GetKey(crouchKey))
             {
-                if (state == MovementState.crouching)
+                if (state == MovementState.idle || slideCurrentSpeed <= 1)
                 {
                     state = MovementState.crouching;
                     moveSpeed = crouchSpeed;
                 }
-                else
+                else if (state == MovementState.sliding)
                 {
                     state = MovementState.sliding;
                     moveSpeed = slideCurrentSpeed;
-                    readyToSlide = false;
                 }
             }
+
+            // Mode - Sprinting
+            if (grounded && Input.GetKey(sprintKey))
+            {
+                state = MovementState.sprinting;
+                moveSpeed = sprintSpeed;
+            }
+
+            // Mode - Walking
+            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                if (Input.GetKey(crouchKey))
+                {
+                    if (state == MovementState.crouching)
+                    {
+                        state = MovementState.crouching;
+                        moveSpeed = crouchSpeed;
+                    }
+                    else
+                    {
+                        state = MovementState.sliding;
+                        moveSpeed = slideCurrentSpeed;
+                        readyToSlide = false;
+                    }
+                }
+                else
+                    state = MovementState.walking;
+
+            }
+
+            // Mode - Idle
+            else if (grounded)
+            {
+                moveSpeed = 1;
+                state = MovementState.idle;
+            }
+
+
+            // Mode - Air
             else
-                state = MovementState.walking;
-                
+            {
+                state = MovementState.air;
+            }
         }
-
-        // Mode - Idle
-        else if (grounded)
-        {
-            moveSpeed = 1;
-            state = MovementState.idle;
-        }
-        
-
-        // Mode - Air
-        else
-        {
-            state = MovementState.air;
-        }
-
     }
 
     private void MovePlayer()
@@ -320,7 +324,7 @@ public class PlayerMovement : MonoBehaviour
             
 
         // In air
-        else if(!grounded)
+        else if(!grounded && !Physics.Raycast(transform.position,orientation.forward,1))
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // Turn gravity off while on slope
@@ -484,6 +488,16 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+    }
+
+    public bool GetGrounded()
+    {
+        return grounded;
+    }
+
+    public void SetMoveSpeed(float mSpeed)
+    {
+        moveSpeed = mSpeed;
     }
 
     public float GetMoveSpeed()

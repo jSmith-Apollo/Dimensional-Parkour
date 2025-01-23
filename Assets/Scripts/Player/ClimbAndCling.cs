@@ -67,7 +67,7 @@ public class ClimbAndCling : MonoBehaviour
 
         if (Mover.GetGrounded() && !canCling)
         {
-            StartCoroutine(StopCling(0.1f));
+            StartCoroutine(StopCling(0.2f));
             Invoke(nameof(ResetCooldown), ClingCooldown);
         }
     }
@@ -119,7 +119,6 @@ public class ClimbAndCling : MonoBehaviour
 
     public void ResetCooldown()
     {
-        print("ResetClimbCD");
         canCling = true;
     }
 

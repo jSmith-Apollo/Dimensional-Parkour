@@ -17,6 +17,15 @@ public class ClimbAndCling : MonoBehaviour
 
     private IEnumerator ClingReset;
 
+    [Header("WallRun Info")]
+    private bool canWallRun;
+    public float WallRunTime;
+    public float WallRunDecel;
+    public float wallRunCharAngle;
+    private float CharStartAngle;
+
+    
+
     [Header("PlayerInfo")]
     public PlayerMovement Mover;
     public Transform orientation;

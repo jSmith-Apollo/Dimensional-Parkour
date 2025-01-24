@@ -6175,7 +6175,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   heightCheckAngle: 15
-  heightCheckDist: 10
+  heightCheckDist: 3
   canVault: 1
 --- !u!1 &2082450440
 GameObject:

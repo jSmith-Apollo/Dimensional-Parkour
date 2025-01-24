@@ -42,15 +42,19 @@ public class Vaulting : MonoBehaviour
 
         rotatedDirection = axisRotation * orientation.forward;
 
-        Debug.DrawRay(transform.position, rotatedDirection * obsticleHit.distance, Color.magenta);
-
         if (Physics.Raycast(transform.position, rotatedDirection, out obsticleHit, heightCheckDist, whatIsObsticle))
         {
+            Debug.DrawRay(transform.position, rotatedDirection * obsticleHit.distance, Color.yellow);
             canVault = false;
             return true;
         }
-        canVault = true;
-        return false;
+        else
+        {
+            Debug.DrawRay(transform.position, rotatedDirection * heightCheckDist, Color.white);
+            canVault = true;
+            return false;
+        }
+        
     }
 
     //public void vault()

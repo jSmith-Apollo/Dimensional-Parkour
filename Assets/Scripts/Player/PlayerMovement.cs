@@ -62,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
     private bool test4Pressed;
 
     public MovementState state;
+
+    public Vaulting vault;
     public enum MovementState
     {
         walking,
@@ -121,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // When to jump (Checks if ready to jump, on ground or a slope, and not close to a wall and can climb)
-        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling())
+        if (!vault.canVault() && Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling())
         {
             readyToJump = false;
 
@@ -356,5 +358,10 @@ public class PlayerMovement : MonoBehaviour
     public float GetMaxSpeed()
     {
         return walkSpeed;
+    }
+
+    public float GetStartYScale()
+    {
+        return startYScale;
     }
 }

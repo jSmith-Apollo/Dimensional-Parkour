@@ -1903,10 +1903,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &563335684
 GameObject:
@@ -3850,6 +3850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1178222850}
   - component: {fileID: 1178222849}
+  - component: {fileID: 1178222851}
   m_Layer: 12
   m_Name: Obsticle Test
   m_TagString: Untagged
@@ -3865,7 +3866,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1178222848}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 3
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -3892,8 +3893,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1178222848}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 378.22028, y: 1.075, z: 360.01752}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 36.96814, y: -10.628121, z: -10.456177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3904,8 +3905,29 @@ Transform:
   - {fileID: 992359308}
   - {fileID: 800366469}
   - {fileID: 267683112}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1775969603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1178222851
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178222848}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2703247, y: 1.1419797, z: 0.83444214}
+  m_Center: {x: 0.030151367, y: -0.3317685, z: -0.00044250488}
 --- !u!1 &1254243240
 GameObject:
   m_ObjectHideFlags: 0
@@ -5149,6 +5171,7 @@ Transform:
   m_Children:
   - {fileID: 2031165733}
   - {fileID: 59614866}
+  - {fileID: 1178222850}
   m_Father: {fileID: 1641170163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1782679063
@@ -5583,7 +5606,7 @@ GameObject:
   - component: {fileID: 1883052566}
   - component: {fileID: 1883052565}
   - component: {fileID: 1883052564}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Slope 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6174,9 +6197,11 @@ MonoBehaviour:
   whatIsObsticle:
     serializedVersion: 2
     m_Bits: 4096
+  obsticleCheckDist: 3
+  aboveObsticleCheckDist: 1.5
   heightCheckAngle: 15
   heightCheckDist: 3
-  canVault: 1
+  vaultForce: 1
 --- !u!1 &2082450440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6566,6 +6591,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
+      propertyPath: vault
+      value: 
+      objectReference: {fileID: 2033303624}
+    - target: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -6617,5 +6646,4 @@ SceneRoots:
   - {fileID: 1641170163}
   - {fileID: 1353045719}
   - {fileID: 536033699}
-  - {fileID: 1178222850}
   - {fileID: 35139324}

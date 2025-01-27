@@ -5236,7 +5236,7 @@ MonoBehaviour:
   climbTime: 1
   KickOffStrength: 10
   ClingCooldown: 1
-  WallRunTime: 0
+  WallRunTime: 2
   minWallRunSpeed: 0
   wallRunCharAngle: 15
   Mover: {fileID: 2033303621}

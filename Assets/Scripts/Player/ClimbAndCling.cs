@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public class ClimbAndCling : MonoBehaviour
     private IEnumerator ClingReset;
 
     [Header("WallRun Info")]
+    private bool IsWallRunning;
     private bool canWallRunRight;
     private bool canWallRunLeft;
     public float WallRunTime;
@@ -99,12 +101,21 @@ public class ClimbAndCling : MonoBehaviour
         {
             rb.velocity = new Vector3(0, 3, 0);
         }
+        else if (IsWallRunning)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, -1, rb.velocity.z);
+        }
 
         //Cooldown Resets//
         if (Mover.GetGrounded() && !canCling)
         {
             StartCoroutine(StopCling(0.2f));
             Invoke(nameof(ResetCooldown), ClingCooldown);
+        }
+        if (Mover.GetGrounded())
+        {
+            canWallRunLeft = true;
+            canWallRunRight = true;
         }
     }
 
@@ -139,19 +150,21 @@ public class ClimbAndCling : MonoBehaviour
 
     private void WallRun(bool IsRight)
     {
+        canCling = false;
+        IsWallRunning = true;
+        rb.useGravity = false;
         if (IsRight)
         {
             print("wallRunRight");
             canWallRunRight = false;
-            GameObject.Find("PlayerV2").transform.rotation = GameObject.Find("PlayerV2").transform.rotation * new Quaternion(0, 0, wallRunCharAngle,0);
         }
         else 
         {
             print("wallRunLeft");
             canWallRunLeft = false;
-            transform.parent.rotation = transform.parent.rotation * new Quaternion(0, 0, -1 * wallRunCharAngle, 0);
-
         }
+
+        Invoke(nameof(StopWallRun), WallRunTime);
     }
 
     // Stop Action Methods//
@@ -170,8 +183,15 @@ public class ClimbAndCling : MonoBehaviour
         yield return new WaitForSeconds(t);
         Mover.state = PlayerMovement.MovementState.air;
 
- }
+     }
 
+    private void StopWallRun()
+    {
+        rb.useGravity = true;
+        IsWallRunning = false;
+        GameObject.Find("PlayerV2").transform.rotation = Quaternion.Euler(0, 0, 0);
+
+    }
     // Reset Methods//
     public void ResetCooldown()
     {

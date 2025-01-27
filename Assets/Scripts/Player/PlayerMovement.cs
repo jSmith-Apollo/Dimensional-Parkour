@@ -80,6 +80,8 @@ public class PlayerMovement : MonoBehaviour
         walking,
         sprinting,
         crouching,
+        clinging,
+        climbing,
         air,
         sliding,
         idle
@@ -140,8 +142,9 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        // When to jump
-        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()))
+
+        // When to jump (Checks if ready to jump, on ground or a slope, and not close to a wall and can climb)  
+        if (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling())
         {
             readyToJump = false;
 
@@ -485,7 +488,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
     public float GetMoveSpeed()
     {
         return moveSpeed;
@@ -493,5 +499,9 @@ public class PlayerMovement : MonoBehaviour
     public float GetMaxSpeed()
     {
         return walkSpeed;
+    }
+    public bool GetGrounded()
+    {
+        return grounded;
     }
 }

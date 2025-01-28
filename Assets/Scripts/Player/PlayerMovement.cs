@@ -86,7 +86,8 @@ public class PlayerMovement : MonoBehaviour
         climbing,
         air,
         sliding,
-        idle
+        idle,
+        vaulting
     }
 
     private void Start()
@@ -130,7 +131,8 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
         */
 
-        //Debug.Log(""+state);
+
+        //Debug.Log("State: "+state);
     }
         
 
@@ -146,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         // When to jump (Checks if ready to jump, on ground or a slope, and not close to a wall and can climb)
-        if (!vault.canVault() && Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling())
+        if (!vault.canVault() && (Input.GetKey(jumpKey) && readyToJump && (grounded || OnSlope()) && !gameObject.GetComponent<ClimbAndCling>().ReadyToCling()))
         {
             readyToJump = false;
 
@@ -364,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
-        //Debug.Log("Trying to jump");
+        Debug.Log("Trying to jump with a force of "+jumpForceAtTime);
     }
 
     private void ResetJump()

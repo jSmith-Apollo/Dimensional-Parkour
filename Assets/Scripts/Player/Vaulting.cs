@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class Vaulting : MonoBehaviour
 {
@@ -26,7 +28,12 @@ public class Vaulting : MonoBehaviour
 
     Vector3 rotatedDirection;
 
-    public float vaultForce;
+    public float vaultJumpForce;
+    public float vaultForwardForce;
+
+    public float forceDownTimeInSecs;
+
+    int step = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -37,24 +44,54 @@ public class Vaulting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //print("Obsticle is too high = " + tooHigh());
-        //print("In front of an obsticle = " + inFront());
-        //print("Above an obsticle = " + aboveObsticle());
-        //print("Can Vault = " + canVault());
+
+        print("Too High? " + tooHigh() + "  |  In Front? " + inFront() + "  |  Above? " + aboveObsticle() + "  |  Is Grounded? "+mover.GetGrounded()+"  |  Can Vault? " + canVault());
 
         if (canVault())
         {
             if (Input.GetKey(KeyCode.Space))
             {
                 print("trying to vault");
+                //step = 0;
+                //print("Step is reset to " + step);
                 vault();
             }
-        }
-        else if (aboveObsticle())
-        {
-            transform.localScale = new Vector3(transform.localScale.x, mover.GetStartYScale(), transform.localScale.z);
 
         }
+        if (step < 3)
+        {
+            if (step == 0 && aboveObsticle())
+            {
+                transform.localScale = new Vector3(transform.localScale.x, mover.crouchYScale, transform.localScale.z);
+                rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
+                step++;
+                print("step " + step);
+            }
+            else if (step == 1 && !aboveObsticle())
+            {
+                IEnumerator helper = VaultHelper();
+                StartCoroutine(helper);
+                step++;
+                print("step " + step);
+            }
+            else if (step == 2)
+            {
+                step = 0;
+                print("Step is reset to " + step);
+            }
+        }
+    }
+
+    private IEnumerator VaultHelper()
+    {
+        Invoke(nameof(forceDown), forceDownTimeInSecs);
+        yield break;
+    }
+
+    public void forceDown()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, mover.GetStartYScale(), transform.localScale.z);
+        rb.AddForce(Vector3.down * 10f, ForceMode.Impulse);
     }
 
     public bool tooHigh()
@@ -114,15 +151,14 @@ public class Vaulting : MonoBehaviour
 
     public bool canVault()
     {
-        return (inFront() && tooHigh());
+        return (inFront() && !tooHigh() && mover.state != PlayerMovement.MovementState.idle && mover.GetGrounded());
     }
 
     public void vault()
     {
-        rb.AddForce(Vector3.up * vaultForce, ForceMode.Impulse);
-        rb.AddForce(orientation.forward * vaultForce * 2f, ForceMode.Impulse);
-        print("trying to scale");
-        transform.localScale = new Vector3(transform.localScale.x, mover.crouchYScale, transform.localScale.z);
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        mover.state = PlayerMovement.MovementState.vaulting;
+        rb.AddForce(Vector3.up * vaultJumpForce, ForceMode.Impulse);
+        rb.AddForce(orientation.forward * vaultForwardForce * 2f, ForceMode.Impulse);
+        
     }
 }

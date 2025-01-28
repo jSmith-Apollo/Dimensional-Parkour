@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Debug.Log("State: "+state);
     }
-        
+
 
     private void FixedUpdate()
     {
@@ -157,8 +157,8 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        
-            // Start crouch
+
+        // Start crouch
         if (Input.GetKeyDown(crouchKey))
         {
             if (state == MovementState.idle || slideCurrentSpeed <= 1)
@@ -197,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
             }
             test1Pressed = true;
         }
-        if(Input.GetKeyUp(testKey1))
+        if (Input.GetKeyUp(testKey1))
             test1Pressed = false;
 
         // Test button
@@ -239,6 +239,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void StateHandler()
     {
+        if (state != MovementState.clinging && state != MovementState.climbing)
+        {
         // Mode - Crouching
         if (Input.GetKey(crouchKey))
         {
@@ -280,7 +282,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
                 state = MovementState.walking;
-                
+
         }
 
         // Mode - Idle
@@ -289,7 +291,7 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = 1;
             state = MovementState.idle;
         }
-        
+
 
         // Mode - Air
         else
@@ -297,6 +299,7 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.air;
         }
 
+    }
     }
 
     private void MovePlayer()
@@ -327,7 +330,7 @@ public class PlayerMovement : MonoBehaviour
             
 
         // In air
-        else if(!grounded)
+        else if(!grounded && !Physics.Raycast(transform.position, orientation.forward, 1))
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // Turn gravity off while on slope

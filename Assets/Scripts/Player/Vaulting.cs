@@ -45,7 +45,7 @@ public class Vaulting : MonoBehaviour
     void Update()
     {
 
-        print("Too High? " + tooHigh() + "  |  In Front? " + inFront() + "  |  Above? " + aboveObsticle() + "  |  Is Grounded? "+mover.GetGrounded()+"  |  Can Vault? " + canVault());
+        //print("Too High? " + tooHigh() + "  |  In Front? " + inFront() + "  |  Above? " + aboveObsticle() + "  |  Is Grounded? "+mover.GetGrounded()+"  |  Can Vault? " + canVault());
 
         if (canVault())
         {

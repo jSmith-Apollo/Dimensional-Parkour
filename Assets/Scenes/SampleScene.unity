@@ -10886,7 +10886,7 @@ MonoBehaviour:
     m_Bits: 512
   climbTime: 1
   KickOffStrength: 10
-  ClingCooldown: 1
+  ClingCooldown: 0
   Mover: {fileID: 2033303621}
   orientation: {fileID: 972628696}
   rb: {fileID: 2033303615}

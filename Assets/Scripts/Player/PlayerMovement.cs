@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private bool test4Pressed;
 
     public Vaulting vault;
+    public DimensionNavigation nav;
 
     public MovementState state;
     public enum MovementState
@@ -87,7 +88,8 @@ public class PlayerMovement : MonoBehaviour
         air,
         sliding,
         idle,
-        vaulting
+        vaulting,
+        phasing
     }
 
     private void Start()
@@ -193,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test1Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(379.0316f, 1.47f, 328.306f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(379.0316f, 1.47f, 328.306f);
             }
             test1Pressed = true;
         }
@@ -205,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test2Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(368.32f, 4.67f, 333.9f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(368.32f, 4.67f, 333.9f);
             }
             test2Pressed = true;
         }
@@ -217,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test3Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(339.6f, 7.01f, 344.48f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(339.6f, 7.01f, 344.48f);
             }
             test3Pressed = true;
         }
@@ -229,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test4Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(375.43f, 0.8f, 354.86f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(375.43f, 0.8f, 354.86f);
             }
             test4Pressed = true;
         }

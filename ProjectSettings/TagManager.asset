@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - 4D
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - 
   - whatIsWall
   - whatIsGround
-  - whatIsPassthrough
+  - 
   - whatIsObsticle
   - 
-  - 
-  - 
+  - whatIs4D
+  - whatIsPassthrough
   - 
   - 
   - 

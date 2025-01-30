@@ -38,4 +38,23 @@ public class DimensionalObj : MonoBehaviour
 
     }
 
+    public GameObject[] getDescendants(GameObject obj)
+    {
+        //return null if no object is present
+        if (obj == null) return null;
+        //Get list of all  transforms in the main children object//
+        Transform[] childrenT = obj.GetComponentsInChildren<Transform>();
+        GameObject[] children = new GameObject[childrenT.Length];
+
+        //Add each object of the transforms to the childrens list
+        for (int i = 0; i < children.Length; i++)
+        {
+            children[i] = childrenT[i].gameObject;
+        }
+
+        return children;
+    }
+
+
+
 }

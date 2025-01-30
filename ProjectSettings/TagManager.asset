@@ -20,11 +20,11 @@ TagManager:
   - 
   - whatIsObsticle
   - 
-  - whatIs4D
+  - whatIs4DGround
+  - whatIs4DWall
+  - 
+  - 
   - whatIsPassthrough
-  - 
-  - 
-  - 
   - 
   - 
   - 

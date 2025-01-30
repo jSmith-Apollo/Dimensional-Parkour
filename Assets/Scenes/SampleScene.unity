@@ -2182,7 +2182,6 @@ Transform:
   - {fileID: 1254243241}
   - {fileID: 997918488}
   - {fileID: 745914233}
-  - {fileID: 1105264352}
   - {fileID: 1949228679}
   - {fileID: 1257871305}
   - {fileID: 347176285}
@@ -2945,6 +2944,22 @@ MeshFilter:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8615933268052686273, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}
   m_PrefabInstance: {fileID: 2947433761204981354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &474148093 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4848303337468625236, guid: d823ec56f03fc1645a34bbf9ccd27bf2, type: 3}
+  m_PrefabInstance: {fileID: 1353045719}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a47d9fdba0e3e49bfe57320505a932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &474148097 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8103560370541921813, guid: d823ec56f03fc1645a34bbf9ccd27bf2, type: 3}
+  m_PrefabInstance: {fileID: 1353045719}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &505667426
 GameObject:
@@ -6311,9 +6326,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1105264352}
+  - component: {fileID: 1105264353}
   m_Layer: 0
   m_Name: FloatingPath1
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6327,7 +6343,7 @@ Transform:
   m_GameObject: {fileID: 1105264351}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.518707, y: 10.727268, z: -9.62265}
+  m_LocalPosition: {x: 0.505188, y: 11.447509, z: 15.289307}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6338,8 +6354,21 @@ Transform:
   - {fileID: 1569663804}
   - {fileID: 1785346074}
   - {fileID: 6241274}
-  m_Father: {fileID: 279069789}
+  m_Father: {fileID: 1716354497}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1105264353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105264351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d4d536c90b3549b73e99ace4d37e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dimNav: {fileID: 2033303627}
 --- !u!1 &1133107169
 GameObject:
   m_ObjectHideFlags: 0
@@ -7327,7 +7356,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6381515234243016882, guid: d823ec56f03fc1645a34bbf9ccd27bf2, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8103560370541921813, guid: d823ec56f03fc1645a34bbf9ccd27bf2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1616323948}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d823ec56f03fc1645a34bbf9ccd27bf2, type: 3}
 --- !u!1 &1361189929
@@ -8643,6 +8675,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1716354497}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1616323947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1616323948}
+  - component: {fileID: 1616323950}
+  - component: {fileID: 1616323949}
+  m_Layer: 5
+  m_Name: ColorBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1616323948
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616323947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.11612, y: 0.11612, z: 0.11612}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 474148097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 283.5, y: 257}
+  m_SizeDelta: {x: 4882.9, y: 4426.5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1616323949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616323947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.8797048, b: 0.6650944, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1616323950
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616323947}
+  m_CullTransparentMesh: 1
 --- !u!1 &1619784057
 GameObject:
   m_ObjectHideFlags: 0
@@ -9284,6 +9391,7 @@ Transform:
   m_Children:
   - {fileID: 1905986858}
   - {fileID: 1609730372}
+  - {fileID: 1105264352}
   m_Father: {fileID: 1641170163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1769628615
@@ -9974,7 +10082,7 @@ GameObject:
   - component: {fileID: 1883052564}
   m_Layer: 10
   m_Name: Slope 1
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11007,9 +11115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399357c2cd2aac64f9e059e17b3fcf13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ui: {fileID: 474148093}
   mover: {fileID: 2033303621}
   dim: {fileID: 0}
   PhaseKey: 101
+  switchCooldown: 2
   canSwitchModes: 1
   in4D: 0
   sphereRadius: 0

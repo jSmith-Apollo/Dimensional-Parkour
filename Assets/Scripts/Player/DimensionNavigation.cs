@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class DimensionNavigation : MonoBehaviour
 {
-
+    public UIClass ui;
     public PlayerMovement mover;
     public DimensionalObj dim;
 
     public KeyCode PhaseKey = KeyCode.E;
+    public float switchCooldown;
     public bool canSwitchModes;
     public bool in4D;
     public float sphereRadius;
@@ -22,7 +23,6 @@ public class DimensionNavigation : MonoBehaviour
     void Start()
     {
         mover = GetComponent<PlayerMovement>();
-
     }
 
     // Update is called once per frame
@@ -31,23 +31,29 @@ public class DimensionNavigation : MonoBehaviour
         if (Input.GetKey(PhaseKey) && canSwitchModes)
         {
             print("trying to switch modes");
-            Invoke(nameof(modeSwitcher), 0f);
+            SwitchMode();
         }
     }
 
     public void SwitchMode()
     {
+        canSwitchModes = false;
+        in4D = !in4D;
+        ui.Negate();
+        print("switched modes");
+        Invoke(nameof(ResetSwitchCooldown), switchCooldown);
         
     }
 
-    public IEnumerator modeSwitcher()
+    public void ResetSwitchCooldown()
     {
-        canSwitchModes = false;
-        yield return new WaitForSeconds(0.5f);
-        in4D = !in4D;
-        print("switched modes");
         canSwitchModes = true;
-
     }
+
+    public bool IsIn4D()
+    {
+        return in4D;
+    }
+
 
 }

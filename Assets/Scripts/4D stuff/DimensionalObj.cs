@@ -6,6 +6,7 @@ using UnityEngine;
 public class DimensionalObj : MonoBehaviour
 {
 
+    GameObject[] objects;
     public DimensionNavigation dimNav;
     //string tag = "4D";
     
@@ -13,7 +14,8 @@ public class DimensionalObj : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(dimNav.IsIn4D());
+        objects = getDescendants(transform.gameObject);
+        checkAndSwitchMode();
     }
 
     // Update is called once per frame
@@ -24,18 +26,35 @@ public class DimensionalObj : MonoBehaviour
 
     private void FixedUpdate()
     {
-        print("In 4D mode? " + dimNav.IsIn4D());
-        if (dimNav.IsIn4D() && gameObject)
-        {
-            gameObject.gameObject.SetActive(true);
-            print("Set 4D objects Active");
-        }
-        else if (!dimNav.IsIn4D() && gameObject.activeInHierarchy)
-        {
-            gameObject.SetActive(false);
-            print("Set 4D objects Inactive");
-        }    
+        
+        //print("In 4D mode? " + dimNav.IsIn4D());
+        checkAndSwitchMode();
 
+
+    }
+
+    public void checkAndSwitchMode()
+    {
+        if (dimNav.IsIn4D())
+        {
+            foreach (GameObject obj in objects)
+            {
+                if (obj.activeInHierarchy == false)
+                {
+                    obj.SetActive(true);
+                }
+            }
+        }
+        else if (!dimNav.IsIn4D())
+        {
+            foreach (GameObject obj in objects)
+            {
+                if (obj.activeSelf)
+                {
+                    obj.SetActive(false);
+                }
+            }
+        }
     }
 
     public GameObject[] getDescendants(GameObject obj)
@@ -47,12 +66,21 @@ public class DimensionalObj : MonoBehaviour
         GameObject[] children = new GameObject[childrenT.Length];
 
         //Add each object of the transforms to the childrens list
-        for (int i = 0; i < children.Length; i++)
+        for (int i = 0; i < children.Length-1; i++)
         {
-            children[i] = childrenT[i].gameObject;
+            
+                children[i] = childrenT[i].gameObject;
+                //print("" + children[i]);
+            
         }
 
-        return children;
+        GameObject[] allButMain = new GameObject[childrenT.Length-1];
+        for(int f = 0; f<children.Length-1; f++)
+        {
+            allButMain[f] = children[f+1].gameObject;
+            print("" + allButMain[f]);
+        }
+        return allButMain;
     }
 
 

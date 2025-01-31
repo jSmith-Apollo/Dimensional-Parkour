@@ -23,6 +23,8 @@ public class DimensionNavigation : MonoBehaviour
     void Start()
     {
         mover = GetComponent<PlayerMovement>();
+        if (IsIn4D())
+            ui.Negate();
     }
 
     // Update is called once per frame

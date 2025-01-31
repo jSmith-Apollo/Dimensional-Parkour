@@ -103,7 +103,7 @@ public class ClimbAndCling : MonoBehaviour
         }
         else if (IsWallRunning)
         {
-            rb.velocity = new Vector3(rb.velocity.x, -1, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             //check if the user has no wall in their wallrun direction
             if ((WallRunDirRight && !Physics.SphereCast(orientation.position, 0.4f, orientation.right, out RaycastHit hitinfo, 0.5f, WhatIsWall)) || (!WallRunDirRight && !Physics.SphereCast(orientation.position, 0.4f, orientation.right*-1, out RaycastHit hitinfo2, 0.5f, WhatIsWall)))
             {

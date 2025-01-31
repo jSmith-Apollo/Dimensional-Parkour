@@ -10887,9 +10887,19 @@ MonoBehaviour:
   climbTime: 1
   KickOffStrength: 10
   ClingCooldown: 0
+  WallRunTime: 1
+  minWallRunSpeed: 8
+  wallRunCharAngle: 0
   Mover: {fileID: 2033303621}
   orientation: {fileID: 972628696}
   rb: {fileID: 2033303615}
+  debugMode: 0
+  WallRunRadius: 0
+  WallRunMaxDistance: 0
+  ClingRadius: 0
+  ClingMaxDistance: 0
+  KickOffRadius: 0
+  KickOffMaxDistance: 0
 --- !u!114 &2033303621 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4548304069144393126, guid: 18b559cd97597e44d8f420921c9a76ed, type: 3}

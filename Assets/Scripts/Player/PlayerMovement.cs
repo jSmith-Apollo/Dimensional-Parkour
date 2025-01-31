@@ -464,7 +464,7 @@ public class PlayerMovement : MonoBehaviour
         {
             TimeCount++;
             //print(TimeCount);
-            if (TimeCount >= 25)
+            if (TimeCount >= 50)
             {
                 TimeCount = 0;
                 moveSpeed += walkAcceleration;

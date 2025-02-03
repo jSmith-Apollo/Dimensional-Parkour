@@ -7,6 +7,9 @@ public class ClimbAndCling : MonoBehaviour
 {
     [Header("Layer")]
     public LayerMask WhatIsWall;
+    public LayerMask WhatIs4DWall;
+    public LayerMask WhatIsWallInBoth;
+    public LayerMask WhatIsWallAndPT;
 
     [Header("Climbing variables")]
     private bool canCling;
@@ -21,6 +24,7 @@ public class ClimbAndCling : MonoBehaviour
     public PlayerMovement Mover;
     public Transform orientation;
     public Rigidbody rb;
+
     
 
     // Start is called before the first frame update
@@ -46,7 +50,7 @@ public class ClimbAndCling : MonoBehaviour
             Invoke(nameof(ResetDebounce), 0.5f);
         }
         //Check if player is able to climnb
-        else if (Input.GetKey(Mover.jumpKey) && Mover.state == PlayerMovement.MovementState.clinging && Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo,2, WhatIsWall) && !Debounce)
+        else if (Input.GetKey(Mover.jumpKey) && Mover.state == PlayerMovement.MovementState.clinging && ((Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo,2, WhatIsWall) || ((Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIs4DWall) && Mover.nav.IsIn4D()) || ((Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIsWallAndPT)) && !Mover.nav.IsIn4D()) || (Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIsWallInBoth)))) && !Debounce))
         {
             Climb();
         }

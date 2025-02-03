@@ -8,7 +8,13 @@ public class DimensionalObj : MonoBehaviour
 
     GameObject[] objects;
     public DimensionNavigation dimNav;
-    //string tag = "4D";
+    string tag4D = "4D";
+    string tagBoth = "Both";
+    string tag3D = "3D";
+
+    public LayerMask whatIsWall;
+    public LayerMask whatIsPassThrough;
+    public LayerMask whatIsWallAndPT;
     
 
     // Start is called before the first frame update
@@ -35,23 +41,56 @@ public class DimensionalObj : MonoBehaviour
 
     public void checkAndSwitchMode()
     {
-        if (dimNav.IsIn4D())
+        foreach (GameObject obj in objects)
         {
-            foreach (GameObject obj in objects)
+            if (dimNav.IsIn4D())
             {
-                if (obj.activeInHierarchy == false)
+                if (obj.tag.Equals("3D"))
                 {
-                    obj.SetActive(true);
+                    if (!obj.activeInHierarchy)
+                    {
+                        obj.SetActive(true);
+                    }
+                }
+                else if (obj.tag.Equals("3D"))
+                {
+                    if (obj.layer.Equals("whatIsWallAndPT"))
+                    {
+                        int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
+                        obj.layer = LayerPassthrough;
+                    }
+                }
+                else if (obj.tag.Equals("Both"))
+                {
+                    //do nothing
+                    break;
                 }
             }
         }
-        else if (!dimNav.IsIn4D())
+
+        foreach (GameObject obj in objects)
         {
-            foreach (GameObject obj in objects)
+            if (!dimNav.IsIn4D())
             {
-                if (obj.activeSelf)
+                if (obj.tag.Equals("4D"))
                 {
-                    obj.SetActive(false);
+                    if (obj.activeInHierarchy)
+                    {
+                        obj.SetActive(false);
+                    }
+                }
+                else if (obj.tag.Equals("3D"))
+                {
+                    if (obj.layer.Equals("whatIsPassthrough"))
+                    {
+                        int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
+                        obj.layer = LayerPassthrough;
+                    }
+                }
+                else if (obj.tag.Equals("Both"))
+                {
+                    //do nothing
+                    break;
                 }
             }
         }
@@ -66,7 +105,7 @@ public class DimensionalObj : MonoBehaviour
         GameObject[] children = new GameObject[childrenT.Length];
 
         //Add each object of the transforms to the childrens list
-        for (int i = 0; i < children.Length-1; i++)
+        for (int i = 0; i < children.Length; i++)
         {
             
                 children[i] = childrenT[i].gameObject;
@@ -74,13 +113,15 @@ public class DimensionalObj : MonoBehaviour
             
         }
 
-        GameObject[] allButMain = new GameObject[childrenT.Length-1];
-        for(int f = 0; f<children.Length-1; f++)
+        GameObject[] allButMain = new GameObject[childrenT.Length - 1];
+        for (int f = 0; f < children.Length - 1; f++)
         {
-            allButMain[f] = children[f+1].gameObject;
-            print("" + allButMain[f]);
+            allButMain[f] = children[f + 1].gameObject;
+            print("" + allButMain[f] + "  |  tag: " + allButMain[f].tag);
         }
         return allButMain;
+
+        //return children;
     }
 
 

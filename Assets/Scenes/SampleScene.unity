@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 6241275}
   m_Layer: 10
   m_Name: Platform 3
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -691,7 +691,7 @@ GameObject:
   - component: {fileID: 80622715}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1111,7 +1111,7 @@ GameObject:
   - component: {fileID: 160854634}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1216,7 +1216,7 @@ GameObject:
   - component: {fileID: 230176427}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1321,7 +1321,7 @@ GameObject:
   - component: {fileID: 232752299}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2158,7 +2158,7 @@ GameObject:
   - component: {fileID: 279069789}
   m_Layer: 0
   m_Name: Geometry
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2618,7 +2618,7 @@ GameObject:
   - component: {fileID: 347176285}
   m_Layer: 0
   m_Name: Explorable Building 1
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3960,7 +3960,7 @@ GameObject:
   - component: {fileID: 745914233}
   m_Layer: 0
   m_Name: DomeBuild3
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4685,7 +4685,7 @@ GameObject:
   - component: {fileID: 841494489}
   m_Layer: 0
   m_Name: Tower1
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4861,7 +4861,7 @@ GameObject:
   - component: {fileID: 872459523}
   m_Layer: 0
   m_Name: Tower2
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4899,7 +4899,7 @@ GameObject:
   - component: {fileID: 885887617}
   m_Layer: 0
   m_Name: House 1
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5674,7 +5674,7 @@ GameObject:
   - component: {fileID: 997918488}
   m_Layer: 0
   m_Name: DomeBuild2
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5813,9 +5813,9 @@ GameObject:
   - component: {fileID: 1012035087}
   - component: {fileID: 1012035086}
   - component: {fileID: 1012035085}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5918,9 +5918,9 @@ GameObject:
   - component: {fileID: 1016783639}
   - component: {fileID: 1016783638}
   - component: {fileID: 1016783637}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6691,7 +6691,7 @@ GameObject:
   - component: {fileID: 1254243241}
   m_Layer: 0
   m_Name: DomeBuild1
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6727,7 +6727,7 @@ GameObject:
   - component: {fileID: 1257871306}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6942,7 +6942,7 @@ GameObject:
   - component: {fileID: 1273072326}
   m_Layer: 0
   m_Name: Slope 3
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7465,9 +7465,9 @@ GameObject:
   - component: {fileID: 1368968915}
   - component: {fileID: 1368968914}
   - component: {fileID: 1368968913}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: Platform 2 (1)
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8341,7 +8341,7 @@ GameObject:
   - component: {fileID: 1569663805}
   m_Layer: 9
   m_Name: Platform 2 (3)
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8446,7 +8446,7 @@ GameObject:
   - component: {fileID: 1579995449}
   m_Layer: 9
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8550,7 +8550,7 @@ GameObject:
   - component: {fileID: 1599378991}
   m_Layer: 10
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8850,6 +8850,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1641170163}
+  - component: {fileID: 1641170164}
   m_Layer: 0
   m_Name: Objects
   m_TagString: Untagged
@@ -8875,6 +8876,28 @@ Transform:
   - {fileID: 1716354497}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1641170164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641170162}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d4d536c90b3549b73e99ace4d37e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dimNav: {fileID: 2033303627}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 512
+  whatIsPassThrough:
+    serializedVersion: 2
+    m_Bits: 262144
+  whatIsWallAndPT:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1646413034
 GameObject:
   m_ObjectHideFlags: 0
@@ -8994,7 +9017,7 @@ GameObject:
   - component: {fileID: 1647432307}
   m_Layer: 10
   m_Name: Platform 4
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9358,7 +9381,7 @@ GameObject:
   - component: {fileID: 1716354498}
   m_Layer: 0
   m_Name: 4D
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9394,6 +9417,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimNav: {fileID: 2033303627}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 512
+  whatIsPassThrough:
+    serializedVersion: 2
+    m_Bits: 262144
+  whatIsWallAndPT:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1769628615
 GameObject:
   m_ObjectHideFlags: 0
@@ -9408,7 +9440,7 @@ GameObject:
   - component: {fileID: 1769628617}
   m_Layer: 10
   m_Name: Platform 6
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9510,7 +9542,7 @@ GameObject:
   - component: {fileID: 1775969603}
   m_Layer: 0
   m_Name: PhysicsObjects
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9655,7 +9687,7 @@ GameObject:
   - component: {fileID: 1785346075}
   m_Layer: 9
   m_Name: Platform 2 (2)
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9975,9 +10007,9 @@ GameObject:
   - component: {fileID: 1878731876}
   - component: {fileID: 1878731875}
   - component: {fileID: 1878731874}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Platform 2
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10184,7 +10216,7 @@ GameObject:
   - component: {fileID: 1905986858}
   m_Layer: 15
   m_Name: Passthrough
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10425,7 +10457,7 @@ GameObject:
   - component: {fileID: 1949228679}
   m_Layer: 0
   m_Name: FloatingPath2
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10568,7 +10600,7 @@ GameObject:
   - component: {fileID: 1986572709}
   m_Layer: 0
   m_Name: Slope 2
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10673,7 +10705,7 @@ GameObject:
   - component: {fileID: 2020110174}
   m_Layer: 10
   m_Name: Platform 5
-  m_TagString: Untagged
+  m_TagString: Both
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10880,7 +10912,7 @@ GameObject:
   - component: {fileID: 2030033549}
   m_Layer: 0
   m_Name: Smaller Connector
-  m_TagString: Untagged
+  m_TagString: 3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11056,6 +11088,15 @@ MonoBehaviour:
   WhatIsWall:
     serializedVersion: 2
     m_Bits: 512
+  WhatIs4DWall:
+    serializedVersion: 2
+    m_Bits: 32768
+  WhatIsWallInBoth:
+    serializedVersion: 2
+    m_Bits: 65536
+  WhatIsWallAndPT:
+    serializedVersion: 2
+    m_Bits: 256
   climbTime: 1
   KickOffStrength: 10
   ClingCooldown: 1
@@ -11117,7 +11158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ui: {fileID: 474148093}
   mover: {fileID: 2033303621}
-  dim: {fileID: 0}
+  dim: {fileID: 1641170164}
   PhaseKey: 101
   switchCooldown: 2
   canSwitchModes: 1
@@ -11370,7 +11411,7 @@ GameObject:
   - component: {fileID: 2090287147}
   m_Layer: 10
   m_Name: Platform 1
-  m_TagString: Untagged
+  m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

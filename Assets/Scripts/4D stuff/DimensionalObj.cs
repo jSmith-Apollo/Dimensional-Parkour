@@ -41,59 +41,59 @@ public class DimensionalObj : MonoBehaviour
 
     public void checkAndSwitchMode()
     {
-        foreach (GameObject obj in objects)
-        {
-            if (dimNav.IsIn4D())
-            {
-                if (obj.tag.Equals("3D"))
-                {
-                    if (!obj.activeInHierarchy)
-                    {
-                        obj.SetActive(true);
-                    }
-                }
-                else if (obj.tag.Equals("3D"))
-                {
-                    if (obj.layer.Equals("whatIsWallAndPT"))
-                    {
-                        int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
-                        obj.layer = LayerPassthrough;
-                    }
-                }
-                else if (obj.tag.Equals("Both"))
-                {
-                    //do nothing
-                    break;
-                }
-            }
-        }
+        //foreach (GameObject obj in objects)
+        //{
+        //    if (dimNav.IsIn4D())
+        //    {
+        //        if (obj.tag.Equals("3D"))
+        //        {
+        //            if (!obj.activeInHierarchy)
+        //            {
+        //                obj.SetActive(true);
+        //            }
+        //        }
+        //        else if (obj.tag.Equals("3D"))
+        //        {
+        //            if (obj.layer.Equals("whatIsWallAndPT"))
+        //            {
+        //                int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
+        //                obj.layer = LayerPassthrough;
+        //            }
+        //        }
+        //        else if (obj.tag.Equals("Both"))
+        //        {
+        //            //do nothing
+        //            break;
+        //        }
+        //    }
+        //}
 
-        foreach (GameObject obj in objects)
-        {
-            if (!dimNav.IsIn4D())
-            {
-                if (obj.tag.Equals("4D"))
-                {
-                    if (obj.activeInHierarchy)
-                    {
-                        obj.SetActive(false);
-                    }
-                }
-                else if (obj.tag.Equals("3D"))
-                {
-                    if (obj.layer.Equals("whatIsPassthrough"))
-                    {
-                        int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
-                        obj.layer = LayerPassthrough;
-                    }
-                }
-                else if (obj.tag.Equals("Both"))
-                {
-                    //do nothing
-                    break;
-                }
-            }
-        }
+        //foreach (GameObject obj in objects)
+        //{
+        //    if (!dimNav.IsIn4D())
+        //    {
+        //        if (obj.tag.Equals("4D"))
+        //        {
+        //            if (obj.activeInHierarchy)
+        //            {
+        //                obj.SetActive(false);
+        //            }
+        //        }
+        //        else if (obj.tag.Equals("3D"))
+        //        {
+        //            if (obj.layer.Equals("whatIsPassthrough"))
+        //            {
+        //                int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
+        //                obj.layer = LayerPassthrough;
+        //            }
+        //        }
+        //        else if (obj.tag.Equals("Both"))
+        //        {
+        //            //do nothing
+        //            break;
+        //        }
+        //    }
+        //}
     }
 
     public GameObject[] getDescendants(GameObject obj)

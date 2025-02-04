@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
-
+    [Header("Other Stuff")]
     public Transform orientation;
 
     float horizontalInput;
@@ -344,6 +344,20 @@ public class PlayerMovement : MonoBehaviour
 
         // Turn gravity off while on slope
         rb.useGravity = !OnSlope();
+    }
+
+    public void MoveTo(Vector3 newLoc)
+    {
+        rb.transform.position = newLoc;
+    }
+
+    //Out of bounds detection and relocation
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("OutOfBounds"))
+        {
+            MoveTo(new Vector3(rb.position.x, 20, rb.position.z));
+        }
     }
 
     private void SpeedControl()

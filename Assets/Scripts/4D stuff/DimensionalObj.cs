@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
@@ -67,7 +68,7 @@ public class DimensionalObj : MonoBehaviour
         //        }
         //    }
         //}
-
+        //
         //foreach (GameObject obj in objects)
         //{
         //    if (!dimNav.IsIn4D())
@@ -94,6 +95,69 @@ public class DimensionalObj : MonoBehaviour
         //        }
         //    }
         //}
+
+        
+
+        foreach (GameObject obj in objects)
+        {
+            //GameObject[] NotPT = GameObject.FindGameObjectsWithTag("whatIsWallAndPT");
+
+            //GameObject[] IsPT = GameObject.FindGameObjectsWithTag("whatIsPassthrough");
+
+            if (obj.tag.Equals(tag4D))
+            {
+                if (dimNav.IsIn4D())
+                {
+                    if (!obj.activeInHierarchy)
+                        obj.SetActive(true);
+                }
+                else
+                {
+                    if (obj.activeInHierarchy)
+                        obj.SetActive(false);
+                }
+            }
+
+            else if (obj.tag.Equals(tag3D)){
+                if (dimNav.IsIn4D())
+                {
+                    //if (obj.layer.Equals("whatIsWallAndPT"))
+                    //{
+                    //    int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
+                    //    obj.layer = LayerPassthrough;
+                    //}
+                    //if (obj.layer.Equals("whatIsWallAndPT"))
+                    if(obj.layer == LayerMask.NameToLayer("whatIsWallAndPT"))
+                    {
+                        obj.layer = LayerMask.NameToLayer("whatIsPassthrough");
+                        print("Object: " + obj.name + "  |  Layer was:  'whatIsWallAndPT'  |  Layer is now:  '" + obj.layer + "'");
+                    }
+                        
+
+                }
+                else
+                {
+                    //if (obj.layer.Equals("whatIsPassthrough"))
+                    //{
+                    //    int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
+                    //    obj.layer = LayerPassthrough;
+                    //}
+                    //if (obj.layer.Equals("whatIsPassthrough"))
+                    if (obj.layer == LayerMask.NameToLayer("whatIsPassthrough"))
+                    {
+                        obj.layer = LayerMask.NameToLayer("whatIsWallAndPT");
+                        print("Object: " + obj.name + "  |  Layer was:  'whatIsPassthrough'  |  Layer is now:  '" + obj.layer + "'");
+                    }
+                        
+                    
+                }
+            }
+
+            else if (obj.tag.Equals(tagBoth))
+            {
+                //do nothing
+            }
+        }
     }
 
     public GameObject[] getDescendants(GameObject obj)
@@ -117,7 +181,7 @@ public class DimensionalObj : MonoBehaviour
         for (int f = 0; f < children.Length - 1; f++)
         {
             allButMain[f] = children[f + 1].gameObject;
-            print("" + allButMain[f] + "  |  tag: " + allButMain[f].tag);
+            print("" + allButMain[f] + "  |  tag: " + allButMain[f].tag + "  |  layer:  " + allButMain[f].layer);
         }
         return allButMain;
 

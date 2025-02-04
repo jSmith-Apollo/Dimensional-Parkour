@@ -257,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        if (grounded && Input.GetKey(sprintKey))
+        if (grounded && Input.GetKey(sprintKey) && moveSpeed == walkSpeed)
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
@@ -464,7 +464,7 @@ public class PlayerMovement : MonoBehaviour
         {
             TimeCount++;
             //print(TimeCount);
-            if (TimeCount >= 50)
+            if (TimeCount >= 150)
             {
                 TimeCount = 0;
                 moveSpeed += walkAcceleration;

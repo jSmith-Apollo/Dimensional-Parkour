@@ -37,12 +37,29 @@ public class UIInterface : UIClass
     public void UpdateSpeedUI()
     {
         //Scale the speed UI to match the speed value of the player//
-        scaleByVal(
-            //Get the decimal percentage current speed is at//
-            GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() / GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed(),
-            SpeedBar, //--Object being affected
-            'x' //--Dimension being scaled
-            );
+        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() <= GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed()){ // player is moving at normal speeds
+            scaleByVal(
+                //Get the decimal percentage current speed is at//
+                GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() / GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed(),
+                SpeedBar, //--Object being affected
+                'x' //--Dimension being scaled
+                );
+            //fix outline to normal outline
+            SpeedBar.transform.parent.gameObject.GetComponent<Outline>().effectColor = Color.black;
+            SpeedBar.transform.parent.gameObject.GetComponent<Outline>().effectDistance = new Vector2(2, -2);
+        }
+        else // Player is moving faster than walk speed
+        {
+            scaleByVal(
+                // set bar to full // 
+                1.05f,
+                SpeedBar, //--Object being affected
+                'x' //--Dimension being scaled
+                );
+            //change how the outline looks//
+            SpeedBar.transform.parent.gameObject.GetComponent<Outline>().effectColor = new Color(1, 0, 0, 0.5f);
+            SpeedBar.transform.parent.gameObject.GetComponent<Outline>().effectDistance = new Vector2(5, -5);
+        }
         //--------------------------------------------------------//
 
         //Change the Bar to match the transparency of the Background//

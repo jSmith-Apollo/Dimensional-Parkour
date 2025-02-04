@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - 4D
+  - Both
+  - 3D
+  - OutOfBounds
   layers:
   - Default
   - TransparentFX
@@ -13,12 +17,17 @@ TagManager:
   - UI
   - whatIsPlayer
   - 
-  - 
+  - whatIsWallAndPT
   - whatIsWall
   - whatIsGround
-  - whatIsPassthrough
+  - 
   - whatIsObsticle
   - 
+  - whatIs4DGround
+  - whatIs4DWall
+  - whatIsWallInBoth
+  - 
+  - whatIsPassthrough
   - 
   - 
   - 
@@ -31,12 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - whatIsOOB
   m_SortingLayers:
   - name: Default
     uniqueID: 0

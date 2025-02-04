@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
+    public LayerMask whatIs4DGround;
     bool grounded;
 
     [Header("Slope Handling")]
@@ -58,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
-
+    [Header("Other Stuff")]
     public Transform orientation;
 
     float horizontalInput;
@@ -75,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
     private bool test4Pressed;
 
     public Vaulting vault;
+    public DimensionNavigation nav;
 
     public MovementState state;
     public enum MovementState
@@ -87,7 +89,8 @@ public class PlayerMovement : MonoBehaviour
         air,
         sliding,
         idle,
-        vaulting
+        vaulting,
+        phasing
     }
 
     private void Start()
@@ -107,7 +110,13 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        if(Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround) || (Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIs4DGround) && nav.IsIn4D()))
+        {
+            grounded = true;
+        }
+        else
+            grounded = false;
 
         MyInput();
         SpeedControl();
@@ -193,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test1Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(379.0316f, 1.47f, 328.306f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(379.0316f, 1.47f, 328.306f);
             }
             test1Pressed = true;
         }
@@ -205,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test2Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(368.32f, 4.67f, 333.9f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(368.32f, 4.67f, 333.9f);
             }
             test2Pressed = true;
         }
@@ -217,7 +226,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test3Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(339.6f, 7.01f, 344.48f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(339.6f, 7.01f, 344.48f);
             }
             test3Pressed = true;
         }
@@ -229,7 +238,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!test4Pressed)
             {
-                GameObject.Find("TestCube").GetComponent<Actor>().Move(375.43f, 0.8f, 354.86f);
+                //GameObject.Find("TestCube").GetComponent<Actor>().Move(375.43f, 0.8f, 354.86f);
             }
             test4Pressed = true;
         }
@@ -335,6 +344,20 @@ public class PlayerMovement : MonoBehaviour
 
         // Turn gravity off while on slope
         rb.useGravity = !OnSlope();
+    }
+
+    public void MoveTo(Vector3 newLoc)
+    {
+        rb.transform.position = newLoc;
+    }
+
+    //Out of bounds detection and relocation
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("OutOfBounds"))
+        {
+            MoveTo(new Vector3(rb.position.x, 20, rb.position.z));
+        }
     }
 
     private void SpeedControl()

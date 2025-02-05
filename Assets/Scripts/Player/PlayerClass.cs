@@ -1,7 +1,7 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+//using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerClass : Actor

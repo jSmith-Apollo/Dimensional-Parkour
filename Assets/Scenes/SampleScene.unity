@@ -10160,7 +10160,7 @@ GameObject:
   - component: {fileID: 1878731876}
   - component: {fileID: 1878731875}
   - component: {fileID: 1878731874}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Platform 2
   m_TagString: 4D
   m_Icon: {fileID: 0}
